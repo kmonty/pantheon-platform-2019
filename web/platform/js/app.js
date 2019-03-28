@@ -35,7 +35,8 @@ App.DiagramRoute = Ember.Route.extend({
       if(location.hostname == "localhost"){
         target = "data/servers.json"
       }
-      //load the hard coded site plans
+      //load the hard coded site plans.
+      // Note: there are no site plans for dev/test/live locally.
       if(App.env == 'elite'){
         target = install_dir + "data/elite.json";
       }
