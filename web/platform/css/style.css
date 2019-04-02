@@ -17,8 +17,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 }
 
 #internet h4,
-#diagramContainer h4,
-#edge h4 {
+#diagramContainer h4 {
   display: inline;
   position: absolute;
   /*color: #B5C0C3;*/
@@ -33,12 +32,6 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 .ember-application {
   margin:0;
   padding: 0;
-}
-
-#edge {
-  background: #BBBCBC;
-  padding: 20px 0;
-  overflow: hidden;
 }
 
 #pops .circleIcon {
