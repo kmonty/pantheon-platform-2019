@@ -19,16 +19,26 @@
   </script>
 
   <script type='text/x-handlebars' data-template-name="diagram">
-    <div id="internet">
-      <h4>Incoming traffic</h4>
-      <div id="thecloud">
-        <div class="circleIcon">
-          <img src="img/User-icon-white-72x72.png" />
+    <div id="demo-container">
+      <div id="internet" class="demo-container-section">
+        <h4 class="with-subtitle">Incoming traffic</h4>
+        <h5 class="subtitle">Up to 125K/month</h5>
+        <div id="thecloud">
+          <div class="circleIcon">
+            <img src="img/User-icon-white-72x72.png" />
+          </div>
         </div>
       </div>
-    </div>
-    <div id="diagramContainer">
-      <h4>Pantheon Platform</h4>
+      <div id="edge" class="demo-container-section">
+        <h4 class="with-subtitle">Managed HTTPS via Let's Encrypt</h4>
+        <h5 class="subtitle">Global CDN with <strong>37.5 Tbps</strong> in Capacity</h5>
+        <div id="globalcdn">
+          <img src="img/pantheon-platform-map@2x.png" alt="Pantheon's Global CDN" height="120" />
+        </div>
+      </div>
+      <div id="diagramContainer" class="demo-container-section">
+        <h4>Pantheon Platform</h4>
+      </div>
     </div>
   </script>
 
@@ -37,9 +47,7 @@
       <div class="container-fluid">
 
         <div class="navbar-header">
-          <a class="navbar-brand logo"><img src='img/fist-transparent.png' height='48px'/>The Pantheon Platform</a>
-
-
+          <a class="navbar-brand logo"><img src="img/pantheon-fist-icon.svg" height="48px" />The Pantheon Platform</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

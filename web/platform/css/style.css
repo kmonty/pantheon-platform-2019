@@ -10,19 +10,47 @@ body {
 body {
   background: #FFFFFF;
   overflow: hidden;
+  color: #000;
 }
 
 h1, h2, h3, h4, h5, h6, p, span, a {
   font-family: 'Tablet Gothic', Frutiger, 'Frutiger Linotype', Univers, HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
 }
 
-#internet h4,
-#diagramContainer h4 {
+#demo-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+#demo-container .demo-container-section {
+  position: relative;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 26px 0 rgba(0, 0, 0, 0.2);;
+  margin: 0 20px;
+}
+
+.demo-container-section h4 {
   display: inline;
   position: absolute;
-  /*color: #B5C0C3;*/
   width: auto;
-  margin: 30px 0 0 20px;
+  margin: 16px 0 0 26px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  line-height: 16px;
+}
+
+.demo-container-section h5.subtitle {
+  display: inline;
+  position: absolute;
+  width: auto;
+  margin: 41px 0 0 26px;
+  font-weight: 400;
+  font-size: 17.5px;
+  line-height: 17.5px;
+  letter-spacing: -0.13px;
+  color: #85919A;
 }
 
 #diagramContainer h4 {
@@ -30,7 +58,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 }
 
 .ember-application {
-  margin:0;
+  margin: 0;
   padding: 0;
 }
 
@@ -42,6 +70,14 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   background: #F5F8F8;
   padding: 20px 0;
   overflow: hidden;
+  z-index: 3; /* We need to z-index all these so the box-shadows don't overlap */
+}
+
+#edge {
+  padding: 0;
+  min-height: 120px;
+  overflow: hidden;
+  z-index: 2;
 }
 
 .circleIcon img {
@@ -61,18 +97,21 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 }
 
 .circleIcon {
-  display: table-cell;
   text-align: center;
   vertical-align: middle;
-  background: #313945;
   margin: 0px 10px;
-  height: 72px;
-  width: 72px;
-  border-radius: 36px;
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.24);
   display: block;
   padding: 16px 0;
   float: left;
   transition: all 0.5s ease;
+}
+
+#diagramContainer {
+  z-index: 1;
 }
 
 #diagramContainer,
@@ -86,7 +125,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   transition: all 0.5s ease;
 }
 
-#ember248.emerge{
+#ember248.emerge {
   transition: all 0.5s ease;
 }
 
