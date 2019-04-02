@@ -232,7 +232,7 @@ function myGraph(el) {
             .attr("r", r)
 
         nodeEnter.append("image")
-            .attr("xlink:href", function(d){ return "img/" + d.type + "-white-72x72.png"; })
+            .attr("xlink:href", function(d){ return "img/" + d.type + ".svg"; })
             .attr("class", "icon")
             .attr("x", -22).attr("y", -22)
             .attr("width", 44).attr("height", 44)

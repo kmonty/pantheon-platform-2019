@@ -129,9 +129,9 @@ App.InfobarContentView = Ember.View.extend({
       self.set("controller.title", _marketing[node.type][0]);
       self.set("controller.text", _marketing[node.type][1]);
       var icoColor = "white";
-      self.set("controller.icon", "/platform/img/" + node.type + "-white-72x72.png");
+      self.set("controller.icon", "/platform/img/" + node.type + ".svg");
       $("#infobarContainer").removeClass().addClass(node.type);
-      $(".infobarContent").find("img.headerIcon").attr("src", "/platform/img/" + node.type + "-" + icoColor + "-72x72.png");
+      $(".infobarContent").find("img.headerIcon").attr("src", "/platform/img/" + node.type + ".svg");
       infobarViewInstance.open();
     }
     else{
