@@ -62,10 +62,6 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   padding: 0;
 }
 
-#pops .circleIcon {
-  padding: 0;
-}
-
 #internet {
   background: #F5F8F8;
   padding: 20px 0;
@@ -81,17 +77,12 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 }
 
 .circleIcon img {
-  margin: 0px auto;
+  margin: 0px 18px;
   display: block;
   position: relative;
 }
 
 #thecloud {
-  display: table;
-  margin: 0 auto;
-}
-
-#pops {
   display: table;
   margin: 0 auto;
 }
@@ -105,7 +96,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   border-radius: 100%;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.24);
   display: block;
-  padding: 16px 0;
+  padding: 18px 0;
   float: left;
   transition: all 0.5s ease;
 }
