@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   display: inline;
   position: absolute;
   width: auto;
-  margin: 16px 0 0 26px;
+  margin: 36px 0 0 26px;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -41,20 +41,24 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   line-height: 16px;
 }
 
+.demo-container-section h4 img {
+  vertical-align: bottom;
+  position: absolute;
+  bottom: 2px;
+  max-height: 34px;
+  margin-left: 10px;
+}
+
 .demo-container-section h5.subtitle {
   display: inline;
   position: absolute;
   width: auto;
-  margin: 41px 0 0 26px;
+  margin: 61px 0 0 26px;
   font-weight: 400;
   font-size: 17.5px;
   line-height: 17.5px;
   letter-spacing: -0.13px;
   color: #85919A;
-}
-
-#diagramContainer h4 {
-  top: 300px;
 }
 
 .ember-application {
@@ -67,6 +71,14 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   padding: 20px 0;
   overflow: hidden;
   z-index: 3; /* We need to z-index all these so the box-shadows don't overlap */
+}
+
+#internet h4 {
+  margin-top: 16px; /* Internet section needs 20px less top padding */
+}
+
+#internet h5.subtitle {
+  margin-top: 41px;
 }
 
 #edge {
