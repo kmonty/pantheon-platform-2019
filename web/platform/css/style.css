@@ -9,6 +9,7 @@ body {
 
 body {
   background: #FFFFFF;
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, p, span, a {
@@ -206,7 +207,9 @@ a.logo {
         content: "\E283"; }
 */
 .navbar {
-  margin-bottom: 0px;
+  box-shadow: 0 2px 26px 0 rgba(0, 0, 0, 0.2);
+  height: 60px;
+  margin-bottom: 0;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -223,9 +226,9 @@ a.logo {
   margin-left: 20px;
 }
 
-  .caret{
-    margin-left: 5px;
-  }
+.caret{
+  margin-left: 5px;
+}
 
 .navbar-default .navbar-nav>li>a.dropdown-toggle:hover,
 .navbar-default .navbar-nav>li>a.dropdown-toggle:active,
