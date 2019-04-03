@@ -196,8 +196,8 @@ function myGraph(el) {
             .on("click", function(d) {
                 if(d3.event.defaultPrevented) return; // ignore drag
                 nodeGroup.selectAll("g.node").attr("stroke", "#EFD01B");
-                nodeGroup.selectAll("g.node").attr("background", "#313945");
-                nodeGroup.selectAll("g.node").attr("fill", "#313945");
+                nodeGroup.selectAll("g.node").attr("background", "#FFF");
+                nodeGroup.selectAll("g.node").attr("fill", "#FFF");
                 nodeGroup.selectAll("g.node").attr("stroke-width", 0);
                 //nodeGroup.selectAll("g.node").attr("class", "");
                 if(selectedNode.id == d.id){
@@ -209,8 +209,8 @@ function myGraph(el) {
                     selectedNode = d;
                     d3.select(this).attr("stroke", "#EFD01B");
                     d3.select(this).attr("stroke-width", 4);
-                    d3.select(this).attr("background", "#00A9E0");
-                    d3.select(this).attr("fill", "#00A9E0");
+                    d3.select(this).attr("background", "#FFF");
+                    d3.select(this).attr("fill", "#FFF");
                     //d3.select(this).attr("class", "svgClass");
                     self._triggerEvent("node.selected", d);
                 }

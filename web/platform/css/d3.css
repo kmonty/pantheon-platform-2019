@@ -54,8 +54,8 @@
 
 .inactive .appserver, .inactive .edgeserver, .inactive .fileserver, .inactive .dbserver, .inactive .slavedbserver, .inactive .indexserver, .inactive .cacheserver, .inactive .codeserver, .inactive .newrelic{
   stroke: none;
-  fill: #B5C0C3;
-  background-color: #B5C0C3;
+  fill: #FFF;
+  background-color: #FFF;
   position: relative;
   transition: all 0.3s ease;
 }
