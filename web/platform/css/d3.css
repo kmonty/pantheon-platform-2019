@@ -3,8 +3,14 @@
   opacity: 1;
 }
 
-
-
+/* Borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/ */
+.nodeBlur {
+  stroke: none;
+  stroke-width: 1.5px;
+  pointer-events: none;
+  -webkit-filter: blur(8px);
+  opacity: 0.5;
+}
 
 .link {
   stroke: #999;
@@ -14,14 +20,12 @@
 }
 
 .link.dashed{
-    /*fill: none;*/
-    /*stroke: #999;*/
-    /*stroke-opacity: .6;*/
-    stroke-dasharray: 3;
-    /*stroke-dasharray: 20,10,5,5,5,10;*/
+  /*fill: none;*/
+  /*stroke: #999;*/
+  /*stroke-opacity: .6;*/
+  stroke-dasharray: 3;
+  /*stroke-dasharray: 20,10,5,5,5,10;*/
 }
-
-
 
 .link.active{
   /*stroke: #999;*/
@@ -41,11 +45,9 @@
   height: 44px;
 }
 
-
 .appserver, .edgeserver, .fileserver, .dbserver, .slavedbserver, .indexserver, .cacheserver, .codeserver, .newrelic{
   stroke: none;
-
-  background: #313945;
+  background: #FFF;
   position: relative;
   transition: all 0.3s ease;
 }

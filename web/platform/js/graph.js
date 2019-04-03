@@ -107,10 +107,10 @@ function myGraph(el) {
     var w = $(el).innerWidth(),
         h = $(el).innerHeight(),
         r = 36, //Circle radius
-        st = 0,
+        st = 50,
         bgcolor = 0,
-        sw = 0,
-        fill = "#313945";
+        sw = 5,
+        fill = "#FFF";
         //sc = "";
 
     var vis = this.vis = d3.select(el).append("svg:svg")
@@ -205,7 +205,7 @@ function myGraph(el) {
                     selectedNode = false;
                     self._triggerEvent("node.unselected",d);
                 }
-                else{
+                else {
                     selectedNode = d;
                     d3.select(this).attr("stroke", "#EFD01B");
                     d3.select(this).attr("stroke-width", 4);
@@ -223,6 +223,12 @@ function myGraph(el) {
             .attr("class", "node")
             //.call(force.drag);
 
+        // Borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
+        var circleShadow = nodeEnter.append("circle")
+            .attr("class", "nodeBlur")
+            .attr("r", 30)
+            .style("fill", 'black')
+
         nodeEnter.append("circle")
             .attr("class", "bgCircle")
             .attr("r", r)
@@ -236,6 +242,9 @@ function myGraph(el) {
             .attr("class", "icon")
             .attr("x", -22).attr("y", -22)
             .attr("width", 44).attr("height", 44)
+
+        //circleShadow.attr("cx", function(d) { return d.x + 5; })
+        //  .attr("cy", function(d) { return d.y + 5; });
 
         node.exit().remove();
 
