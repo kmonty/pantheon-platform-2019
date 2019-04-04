@@ -220,16 +220,16 @@ function myGraph(el) {
             });
 
         var nodeEnter = node.enter().insert("g")
-            .attr("class", "node")
+            .attr("class", function(d){ return "node " + d.type + " " + App.env; })
             //.call(force.drag);
 
-        // Borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
+        // Drop-shadow borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
         var circleShadow = nodeEnter.append("circle")
             .attr("class", "nodeBlur")
             .attr("r", 30)
             .style("fill", 'black')
 
-        nodeEnter.append("circle")
+        var circle = nodeEnter.append("circle")
             .attr("class", "bgCircle")
             .attr("r", r)
 
@@ -243,9 +243,15 @@ function myGraph(el) {
             .attr("x", -22).attr("y", -22)
             .attr("width", 44).attr("height", 44)
 
-        //circleShadow.attr("cx", function(d) { return d.x + 5; })
-        //  .attr("cy", function(d) { return d.y + 5; });
-
+        if (App.env == 'elite' || App.env == 'elitemax') {
+            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+            //var type = function(d){ return d.type; }
+            //if (bigservers.indexOf(function(d){ return d.type;})) {
+            bigservers.forEach(function(item, index, array) {
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
+            });
+        }
         node.exit().remove();
 
 
