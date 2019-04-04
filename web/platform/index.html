@@ -71,6 +71,7 @@
                 <li class="elitemax"><a href="#/diagram/elitemax">Elite Traffic Spike</a></li>
               </ul>
             </li>
+            <li class="link multiplesites"><a href="#/diagram/multiplesites">Multiple Sites</a></li>
           </ul>
         </div>
       </div>
@@ -109,36 +110,33 @@
   <script  type="text/javascript">
   $(document).ready(function(){
 
+    var user_image ='<div class="circleIcon"><img src="img/incoming-traffic.svg" /></div>';
+
     $(document).on("click", ".dropdown-menu li a", function() {
-      var user_image ='<div class="circleIcon"><img src="img/incoming-traffic.svg" /></div>';
       // Had to change to this target the immediate parent for nested menus.
       // Use .split() to only get the first class name if multiple.
       var className = $(this).parent('li').attr('class').split(' ')[0];
       $("#thecloud").empty();
+      $('#diagramContainer').removeClass('multiplesites-container');
       if (className == "elite"){
         for (i=0;i<8;i++){
           $(user_image).appendTo("#thecloud");
-
         }
       } else if(className =="elitemax"){
         for (i=0;i<12;i++){
           $(user_image).appendTo("#thecloud");
-
         }
       } else if(className =="performancesmall"){
         for (i=0;i<2;i++){
           $(user_image).appendTo("#thecloud");
-
         }
       } else if(className =="performancemedium"){
         for (i=0;i<3;i++){
           $(user_image).appendTo("#thecloud");
-
         }
       } else if(className =="performancelarge"){
         for (i=0;i<4;i++){
           $(user_image).appendTo("#thecloud");
-
         }
       } else if(className =="performancexl"){
         for (i=0;i<5;i++){
@@ -147,7 +145,20 @@
         }
       } else if (className =="basic"){
         $(user_image).appendTo("#thecloud");
+      } else if (className =="multiplesites"){
+        // For multiplesites, add the class to the diagram container for the
+        // bg image.
+        $(user_image).appendTo("#thecloud");
+        $('#diagramContainer').addClass('multiplesites-container');
       }
+    });
+
+    $(document).on("click", "li.multiplesites a", function() {
+      // For multiplesites, add the class to the diagram container for the
+      // bg image.
+      $("#thecloud").empty();
+      $(user_image).appendTo("#thecloud");
+      $('#diagramContainer').addClass('multiplesites-container');
     });
 });
   </script>

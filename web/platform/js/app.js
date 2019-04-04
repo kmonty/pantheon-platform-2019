@@ -58,6 +58,9 @@ App.DiagramRoute = Ember.Route.extend({
       else if(App.env == 'performancexl'){
         target = install_dir + "data/performancexl.json";
       }
+      else if(App.env == 'multiplesites'){
+        target = install_dir + "data/multiplesites.json";
+      }
       //load the actual site based on the environment selected
       $.get("/"+target+"?env="+params.env_id, function(d){
       if(!App.mySite){
@@ -105,7 +108,8 @@ App.NavView = Ember.View.extend({
       'performancelarge': 'Performance (Large)',
       'performancexl': 'Performance (Extra Large)',
       'elite': 'Elite',
-      'elitexl': 'Elite (Traffic Spike)'
+      'elitexl': 'Elite (Traffic Spike)',
+      'multiplesites': 'Select'
     };
 
     // New code for environments.
