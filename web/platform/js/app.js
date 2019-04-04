@@ -89,11 +89,34 @@ App.NavView = Ember.View.extend({
   templateName: 'nav',
   didInsertElement: function(){
     var self = this;
+    // Old code for dev/test/live.
     $('li.link').removeClass('active');
     $('li.link.'+App.env).addClass('active');
     $(window).on('hashchange', function() {
       $('li.link').removeClass('active');
       $('li.link.'+App.env).addClass('active');
+    });
+
+    // Array of environments.
+    var environments = {
+      'basic': 'Basic',
+      'performancesmall': 'Performance (Small)',
+      'performancemedium': 'Performance (Medium)',
+      'performancelarge': 'Performance (Large)',
+      'performancexl': 'Performance (Extra Large)',
+      'elite': 'Elite',
+      'elitexl': 'Elite (Traffic Spike)'
+    };
+
+    // New code for environments.
+    $('li.dropdown ul li').removeClass('active');
+    $('li.dropdown ul li.'+App.env).addClass('active');
+    // Switch name of environment in drop down.
+    $('a.dropdown-toggle span').html(environments[App.env]);
+    $(window).on('hashchange', function() {
+      $('li.dropdown ul li').removeClass('active');
+      $('li.dropdown ul li.'+App.env).addClass('active');
+      $('a.dropdown-toggle span').html(environments[App.env]);
     });
   },
 });
