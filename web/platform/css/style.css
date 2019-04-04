@@ -262,24 +262,23 @@ a.logo {
 
 .navbar-default .navbar-nav > li {
   height: 60px;
+  margin: 0 30px;
 }
 
-.navbar-default .navbar-nav > li.active {
+.navbar-default .navbar-nav > li.active,
+.navbar-default .navbar-nav > li.open {
   border-bottom: 4px solid #EFD01B;
-  transition: all 0.2s ease;
 }
 
 .navbar-default .navbar-nav > li > a {
   letter-spacing: 0.5px;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0;
   line-height: 60px;
   background: transparent;
 }
 
 .navbar-default .navbar-nav > li > a.dropdown-toggle {
   position: relative;
-  margin-left: 20px;
 }
 
 .dropdown-toggle b.glyphicon {
@@ -287,10 +286,77 @@ a.logo {
   top: 2px;
 }
 
-.dropdown-menu {
+.navbar-nav > li > .dropdown-menu {
   border: 0;
-  left: 20px;
   padding: 0;
+  margin-top: 4px;
+  font-size 15px;
+  min-width: 305px;
+}
+
+.dropdown-menu > li > a,
+.dropdown-menu > li > .dropdown-submenu a {
+  font-weight: 700;
+  letter-spacing: 0.19px;
+  line-height: 18px;
+  color: #000;
+  padding: 0 25px;
+  white-space: nowrap;
+  clear: both;
+}
+
+.dropdown-menu > li {
+  margin: 18px 0;
+}
+
+.dropdown-menu > li > .dropdown-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu > li > .dropdown-submenu > li {
+  margin: 14px 0;
+}
+
+/** Most of the next few following rules are undoing Bootstrap's nightmare. */
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  background: transparent;
+  color: #000;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background: transparent;
+  color: #85919A;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus,
+.dropdown-menu > li > .dropdown-submenu a:hover,
+.dropdown-menu > li > .dropdown-submenu a:focus {
+  background: transparent;
+  color: #85919A;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.dropdown-submenu-header {
+  background: #ECF0F2;
+  padding-bottom: 4px;
+}
+
+.dropdown-menu .dropdown-submenu-header > a {
+  color: #51606A;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding-top: 24px;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
