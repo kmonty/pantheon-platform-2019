@@ -255,31 +255,65 @@ a.logo {
 .navbar {
   box-shadow: 0 2px 26px 0 rgba(0, 0, 0, 0.2);
   height: 60px;
+  border-radius: 0; /* Undo bootstrap default. */
+  border: 0; /* Undo bootstrap default. */
   margin-bottom: 0;
+}
+
+.navbar-default .navbar-nav > li {
+  height: 60px;
+}
+
+.navbar-default .navbar-nav > li.active {
+  border-bottom: 4px solid #EFD01B;
+  transition: all 0.2s ease;
 }
 
 .navbar-default .navbar-nav > li > a {
   letter-spacing: 0.5px;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 60px;
+  background: transparent;
 }
 
 .navbar-default .navbar-nav > li > a.dropdown-toggle {
-  background: #5FC91C;
-  border-radius: 25px;
-  color: #fff;
-  padding: 5px 20px;
   position: relative;
-  margin-top: 10px;
   margin-left: 20px;
 }
 
-.caret {
+.dropdown-toggle b.glyphicon {
   margin-left: 5px;
+  top: 2px;
 }
 
-.navbar-default .navbar-nav>li>a.dropdown-toggle:hover,
-.navbar-default .navbar-nav>li>a.dropdown-toggle:active,
-.navbar-default .navbar-nav>li>a.dropdown-toggle:focus {
-  background:#55AC24;
-  color: #fff;
+.dropdown-menu {
+  border: 0;
+  left: 20px;
+  padding: 0;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:active,
+.navbar-default .navbar-nav > li > a:focus {
   transition: all 0.2s ease;
+  background: transparent;
+  outline: none;
+}
+
+.navbar-default .navbar-nav > li.active > a {
+  background: transparent;
+  outline: none;
+}
+
+/* Undoing Bootstrap's horrible defaults. */
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:active,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:active,
+.navbar-default .navbar-nav > .open > a:focus {
+  background: transparent;
+  outline: none;
 }
