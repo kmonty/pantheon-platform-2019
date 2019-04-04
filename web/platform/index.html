@@ -58,11 +58,17 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Service Levels <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="personal"><a href="#/diagram/personal">Personal</a></li>
-                <li class="professional"><a href="#/diagram/professional">Professional</a></li>
-                <li class="business"><a href="#/diagram/business">Business</a></li>
+                <li class="basic"><a href="#/diagram/basic">Basic</a></li>
+                <li class="performancesmall dropdown-submenu-header"><a href="#/diagram/performancesmall">Performance</a>
+                  <ul class="dropdown-submenu">
+                    <li class="performancesmall"><a href="#/diagram/performancesmall">Small</a></li>
+                    <li class="performancemedium"><a href="#/diagram/performancemedium">Medium</a></li>
+                    <li class="performancelarge"><a href="#/diagram/performancelarge">Large</a></li>
+                    <li class="performancexl"><a href="#/diagram/performancexl">Extra Large</a></li>
+                  </ul>
+                </li>
                 <li class="elite"><a href="#/diagram/elite">Elite</a></li>
-                <li class="elitemax"><a href="#/diagram/elitemax">Elite (Traffic Spike) </a></li>
+                <li class="elitemax"><a href="#/diagram/elitemax">Elite Traffic Spike</a></li>
               </ul>
             </li>
           </ul>
@@ -103,9 +109,11 @@
   <script  type="text/javascript">
   $(document).ready(function(){
 
-    $(document).on("click",".dropdown-menu > li",function(){
+    $(document).on("click", ".dropdown-menu li a", function() {
       var user_image ='<div class="circleIcon"><img src="img/incoming-traffic.svg" /></div>';
-      var className = $(this).attr('class');
+      // Had to change to this target the immediate parent for nested menus.
+      // Use .split() to only get the first class name if multiple.
+      var className = $(this).parent('li').attr('class').split(' ')[0];
       $("#thecloud").empty();
       if (className == "elite"){
         for (i=0;i<8;i++){
@@ -117,17 +125,27 @@
           $(user_image).appendTo("#thecloud");
 
         }
-      } else if(className =="business"){
-        for (i=0;i<4;i++){
-          $(user_image).appendTo("#thecloud");
-
-        }
-      } else if(className =="professional"){
+      } else if(className =="performancesmall"){
         for (i=0;i<2;i++){
           $(user_image).appendTo("#thecloud");
 
         }
-      } else if (className =="personal"){
+      } else if(className =="performancemedium"){
+        for (i=0;i<3;i++){
+          $(user_image).appendTo("#thecloud");
+
+        }
+      } else if(className =="performancelarge"){
+        for (i=0;i<4;i++){
+          $(user_image).appendTo("#thecloud");
+
+        }
+      } else if(className =="performancexl"){
+        for (i=0;i<5;i++){
+          $(user_image).appendTo("#thecloud");
+
+        }
+      } else if (className =="basic"){
         $(user_image).appendTo("#thecloud");
       }
     });

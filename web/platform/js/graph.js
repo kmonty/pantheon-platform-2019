@@ -305,8 +305,8 @@ function myGraph(el) {
             nodes.forEach(function(d, i){
                 //if(d.type == "edgeserver"){d.y = 50; d.x = w/2;}
                 /*else*/ if(d.type == "appserver"){d.y = 200;}
-                else if(d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver"){d.y = 350;}
-                else if(d.type == "slavedbserver"){d.y = 500;}
+                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver"){d.y = 350;}
+                else if (d.type == "slavedbserver") { d.y = 500; }
                 //else if(d.type == "codeserver"){d.x=w-200; d.y=275}
                 //else if(d.type == "newrelic"){d.x=w-100; d.y=50}
                 //else{d.y = 500;}

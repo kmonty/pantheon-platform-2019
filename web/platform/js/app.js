@@ -43,14 +43,20 @@ App.DiagramRoute = Ember.Route.extend({
       else if(App.env == 'elitemax'){
         target = install_dir + "data/elitemax.json";
       }
-      else if(App.env == 'business'){
-        target = install_dir + "data/business.json";
+      else if(App.env == 'basic'){
+        target = install_dir + "data/basic.json";
       }
-      else if(App.env == 'personal'){
-        target = install_dir + "data/personal.json";
+      else if(App.env == 'performancesmall'){
+        target = install_dir + "data/performancesmall.json";
       }
-      else if(App.env == 'professional'){
-        target = install_dir + "data/professional.json";
+      else if(App.env == 'performancemedium'){
+        target = install_dir + "data/performancemedium.json";
+      }
+      else if(App.env == 'performancelarge'){
+        target = install_dir + "data/performancelarge.json";
+      }
+      else if(App.env == 'performancexl'){
+        target = install_dir + "data/performancexl.json";
       }
       //load the actual site based on the environment selected
       $.get("/"+target+"?env="+params.env_id, function(d){
