@@ -266,7 +266,8 @@ a.logo {
 }
 
 .navbar-default .navbar-nav > li.active,
-.navbar-default .navbar-nav > li.open {
+.navbar-default .navbar-nav > li.open,
+.navbar-default .navbar-nav > li.highlighted {
   border-bottom: 4px solid #EFD01B;
 }
 
