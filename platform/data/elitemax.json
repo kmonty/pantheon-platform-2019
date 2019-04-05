@@ -1,8 +1,8 @@
 {
     "servers": [
         {
-            "id": "925e7577",
-            "endpoint": "5aadf118-609f-4b81-8a53-05402afb1958",
+            "id": "725e7577",
+            "endpoint": "2aadf118-609f-4b81-8a53-05402afb1958",
             "type": "appserver",
             "slave_of": null
         },

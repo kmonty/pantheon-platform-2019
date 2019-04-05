@@ -1,12 +1,6 @@
 {
     "servers": [
         {
-            "id": "AAAAAAAA",
-            "type": "edgeserver",
-            "endpoint": "edge1",
-            "slave_of": null
-        },
-        {
             "id": "20fff1ee",
             "endpoint": null,
             "type": "newrelic",
@@ -15,6 +9,12 @@
         {
             "id": "90ea0d97",
             "endpoint": "8fcefc92-b32e-479f-b981-2fd1c56d1f3d",
+            "type": "appserver",
+            "slave_of": null
+        },
+        {
+            "id": "70ea0d97",
+            "endpoint": "6fcefc92-b32e-479f-b981-2fd1c56d1f3d",
             "type": "appserver",
             "slave_of": null
         },

@@ -1,24 +1,6 @@
 {
     "servers": [
         {
-            "id": "925e7577",
-            "endpoint": "5aadf118-609f-4b81-8a53-05402afb1958",
-            "type": "appserver",
-            "slave_of": null
-        },
-        {
-            "id": "elite15455671",
-            "endpoint": "elitea143403b-5258-40fa-9bb1-2fc945411fd3",
-            "type": "slavedbserver",
-            "slave_of": "ee63189cb21e4282913245150067377e"
-        },
-        {
-            "id": "a7acee1f",
-            "endpoint": "2e9c97ee-4a90-48c4-ac3c-68d93a46aa19",
-            "type": "appserver",
-            "slave_of": null
-        },
-        {
             "id": "20fff1ee",
             "endpoint": null,
             "type": "newrelic",
@@ -26,7 +8,31 @@
         },
         {
             "id": "90ea0d97",
-            "endpoint": "8fcefc92-b32e-479f-b981-2fd1c56d1f3d",
+            "endpoint": "6fcefc92-b32e-479f-b981-2fd1c56d1f3d",
+            "type": "appserver",
+            "slave_of": null
+        },
+        {
+            "id": "70ea0d97",
+            "endpoint": "4fcefc92-b32e-479f-b981-2fd1c56d1f3d",
+            "type": "appserver",
+            "slave_of": null
+        },
+        {
+            "id": "60ea0d97",
+            "endpoint": "3fcefc92-b32e-479f-b981-2fd1c56d1f3d",
+            "type": "appserver",
+            "slave_of": null
+        },
+        {
+            "id": "50ea0d97",
+            "endpoint": "2fcefc92-b32e-479f-b981-2fd1c56d1f3d",
+            "type": "appserver",
+            "slave_of": null
+        },
+        {
+            "id": "40ea0d97",
+            "endpoint": "1fcefc92-b32e-479f-b981-2fd1c56d1f3d",
             "type": "appserver",
             "slave_of": null
         },
@@ -53,6 +59,12 @@
             "endpoint": "elitee065141a-12fc-4d68-87d2-9ca00a36742d",
             "type": "dbserver",
             "slave_of": null
+        },
+        {
+            "id": "elite15455671",
+            "endpoint": "elitea143403b-5258-40fa-9bb1-2fc945411fd3",
+            "type": "slavedbserver",
+            "slave_of": "elitee065141a-12fc-4d68-87d2-9ca00a36742d"
         },
         {
             "id": "ad32c423",
