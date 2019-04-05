@@ -61,7 +61,10 @@ App.DiagramRoute = Ember.Route.extend({
       }
       else if(App.env == 'multiplesites'){
         target = install_dir + "data/multiplesites.json";
-      }
+      }/*
+      else if(App.env == 'disaster'){
+        target = install_dir + "data/disaster.json";
+      }*/
       //load the actual site based on the environment selected
       $.get("/"+target+"?env="+params.env_id, function(d){
       if(!App.mySite){
@@ -94,12 +97,13 @@ App.NavView = Ember.View.extend({
   didInsertElement: function(){
     var self = this;
     // Old code for dev/test/live.
+    /*
     $('li.link').removeClass('active');
-    $('li.link.'+App.env).addClass('active');
+    $('li.link.' + App.env).addClass('active');
     $(window).on('hashchange', function() {
       $('li.link').removeClass('active');
       $('li.link.'+App.env).addClass('active');
-    });
+    });*/
 
     // Array of environments.
     var environments = {
@@ -110,7 +114,8 @@ App.NavView = Ember.View.extend({
       'performancexl': 'Performance (Extra Large)',
       'elite': 'Elite',
       'elitemax': 'Elite (Traffic Spike)',
-      'multiplesites': 'Select'
+      'multiplesites': 'Select',
+      'disaster': 'Select'
     };
 
     // Array of traffic strings.
@@ -122,13 +127,14 @@ App.NavView = Ember.View.extend({
       'performancexl': 'Up to 1.5M/month',
       'elite': 'Unlimited',
       'elitemax': 'Unlimited++',
-      'multiplesites': 'Up to 125K/month'
+      'multiplesites': 'Up to 125K/month',
+      'disaster': 'Up to 125K/month'
     };
 
     // New code for environments.
     $('li.dropdown ul li').removeClass('active');
     $('li.dropdown ul li.' + App.env).addClass('active');
-    if (App.env != 'multiplesites') {
+    if (App.env != 'multiplesites' && App.env != 'disaster') {
       $('li.dropdown').addClass('highlighted');
     }
     else {
@@ -141,13 +147,13 @@ App.NavView = Ember.View.extend({
       $('li.dropdown ul li').removeClass('active');
       $('li.dropdown ul li.' + App.env).addClass('active');
       $('a.dropdown-toggle span').html(environments[App.env]);
-      if (App.env != 'multiplesites') {
+      if (App.env != 'multiplesites' && App.env != 'disaster') {
         $('li.dropdown').addClass('highlighted');
+        $('#internet h5.subtitle').html(traffic[App.env]);
       }
       else {
         $('li.dropdown').removeClass('highlighted');
       }
-      $('#internet h5.subtitle').html(traffic[App.env]);
     });
   },
 });

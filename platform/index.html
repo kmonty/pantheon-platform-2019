@@ -33,7 +33,7 @@
         <h4 class="with-subtitle">Managed HTTPS via Let's Encrypt <img src="img/le-logo-lockonly.svg" /></h4>
         <h5 class="subtitle">Global CDN with <strong>37.5 Tbps</strong> in Capacity</h5>
         <div id="globalcdn">
-          <img src="img/pantheon-platform-map@2x.png" alt="Pantheon's Global CDN" height="120" data-toggle="modal" data-target="#myModal" />
+          <img src="img/pantheon-platform-map-cropped.png" alt="Pantheon's Global CDN" height="120" data-toggle="modal" data-target="#myModal" />
         </div>
       </div>
       <div id="diagramContainer" class="demo-container-section">
@@ -71,6 +71,7 @@
                 <li class="elitemax"><a href="#/diagram/elitemax">Elite Traffic Spike</a></li>
               </ul>
             </li>
+            <li class="link disaster"><a href="#/diagram/disaster">Disaster Recovery</a></li>
             <li class="link multiplesites"><a href="#/diagram/multiplesites">Multiple Sites</a></li>
           </ul>
         </div>
@@ -118,6 +119,7 @@
       var className = $(this).parent('li').attr('class').split(' ')[0];
       $("#thecloud").empty();
       $('#diagramContainer').removeClass('multiplesites-container');
+      $('#diagramContainer').removeClass('disaster-container');
       if (className == "elite"){
         for (i=0;i<8;i++){
           $(user_image).appendTo("#thecloud");
@@ -139,9 +141,8 @@
       } else if(className =="performancexl"){
         for (i=0;i<6;i++){
           $(user_image).appendTo("#thecloud");
-
         }
-      } else if (className =="basic"){
+      } else if (className == "basic") {
         $(user_image).appendTo("#thecloud");
       } else if (className =="multiplesites"){
         // For multiplesites, add the class to the diagram container for the
@@ -149,14 +150,31 @@
         $(user_image).appendTo("#thecloud");
         $('#diagramContainer').addClass('multiplesites-container');
       }
+      else if (className == "disaster"){
+        // For disaster, add the class to the diagram container for the
+        // bg image.
+        $(user_image).appendTo("#thecloud");
+        $('#diagramContainer').addClass('disaster-container');
+      }
     });
 
     $(document).on("click", "li.multiplesites a", function() {
       // For multiplesites, add the class to the diagram container for the
       // bg image.
       $("#thecloud").empty();
+      $('#diagramContainer').removeClass('disaster-container');
       $(user_image).appendTo("#thecloud");
       $('#diagramContainer').addClass('multiplesites-container');
+    });
+
+    $(document).on("click", "li.disaster a", function() {
+      // For disaster, add the class to the diagram container for the
+      // bg image.
+      $("#thecloud").empty();
+      $('#diagramContainer').removeClass('multiplesites-container');
+      $(user_image).appendTo("#thecloud");
+      $('#diagramContainer').addClass('disaster-container');
+      $('#diagramContainer').clone().appendTo('#demo-container');
     });
 });
   </script>
