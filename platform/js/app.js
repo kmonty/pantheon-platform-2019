@@ -1,8 +1,13 @@
 App = Ember.Application.create();
 App.env = "";
 var maxWidth = 1200;
-//Directory above webroot, please use trailing slash
+// Directory above webroot, please use trailing slash.
 var install_dir = "platform/";
+
+// Redirect to the proper page on first page load.
+if (!window.location.hash) {
+  window.location = "index.html#/diagram/basic";
+}
 
 var _marketing = {
     'edgeserver'   :["Pantheon's Edge", "The edge has a built-in, ultra-fast cache that's automatically enabled for every site. It improves page load times for our customers and helps sites to cruise through viral traffic spikes without breaking a sweat."],
@@ -30,11 +35,7 @@ App.DiagramRoute = Ember.Route.extend({
   model: function(params){
     return new Ember.RSVP.Promise(function(resolve){
       App.env = params.env_id;
-      var target = install_dir + "/index.php"
-      //local testing data or static data
-      if(location.hostname == "localhost"){
-        target = "data/servers.json"
-      }
+      var target = "data/servers.json"
       //load the hard coded site plans.
       // Note: there are no site plans for dev/test/live locally.
       if(App.env == 'elite'){
