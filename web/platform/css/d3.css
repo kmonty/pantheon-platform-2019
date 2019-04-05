@@ -71,8 +71,6 @@
 .node.inactive:hover .codeserver,
 .node.inactive:hover .newrelic{
   cursor: pointer;
-  fill: #686F77;
-  background-color: #9EA5A9;
   transition: all 0.2s ease;
 }
 
