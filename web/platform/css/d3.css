@@ -40,13 +40,12 @@
   color: #000000;
 }
 
-.icon{
+.icon {
   width: 44px;
   height: 44px;
 }
 
-.appserver, .edgeserver, .fileserver, .dbserver, .slavedbserver, .indexserver, .cacheserver, .codeserver, .newrelic{
-  stroke: none;
+.appserver, .edgeserver, .fileserver, .dbserver, .slavedbserver, .indexserver, .cacheserver, .codeserver, .newrelic {
   background: #FFF;
   position: relative;
   transition: all 0.3s ease;
