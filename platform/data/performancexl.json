@@ -25,6 +25,12 @@
             "slave_of": null
         },
         {
+            "id": "4b95e834",
+            "endpoint": null,
+            "type": "fileserver",
+            "slave_of": null
+        },
+        {
             "id": "40ea0d97",
             "endpoint": "1fcefc92-b32e-479f-b981-2fd1c56d1f3d",
             "type": "appserver",
