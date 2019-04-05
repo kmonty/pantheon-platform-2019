@@ -107,10 +107,10 @@ function myGraph(el) {
     var w = $(el).innerWidth(),
         h = $(el).innerHeight(),
         r = 36, //Circle radius
-        st = 0,
+        st = 50,
         bgcolor = 0,
-        sw = 0,
-        fill = "#313945";
+        sw = 5,
+        fill = "#FFF";
         //sc = "";
 
     var vis = this.vis = d3.select(el).append("svg:svg")
@@ -196,8 +196,8 @@ function myGraph(el) {
             .on("click", function(d) {
                 if(d3.event.defaultPrevented) return; // ignore drag
                 nodeGroup.selectAll("g.node").attr("stroke", "#EFD01B");
-                nodeGroup.selectAll("g.node").attr("background", "#313945");
-                nodeGroup.selectAll("g.node").attr("fill", "#313945");
+                nodeGroup.selectAll("g.node").attr("background", "#FFF");
+                nodeGroup.selectAll("g.node").attr("fill", "#FFF");
                 nodeGroup.selectAll("g.node").attr("stroke-width", 0);
                 //nodeGroup.selectAll("g.node").attr("class", "");
                 if(selectedNode.id == d.id){
@@ -205,12 +205,12 @@ function myGraph(el) {
                     selectedNode = false;
                     self._triggerEvent("node.unselected",d);
                 }
-                else{
+                else {
                     selectedNode = d;
                     d3.select(this).attr("stroke", "#EFD01B");
                     d3.select(this).attr("stroke-width", 4);
-                    d3.select(this).attr("background", "#00A9E0");
-                    d3.select(this).attr("fill", "#00A9E0");
+                    d3.select(this).attr("background", "#FFF");
+                    d3.select(this).attr("fill", "#FFF");
                     //d3.select(this).attr("class", "svgClass");
                     self._triggerEvent("node.selected", d);
                 }
@@ -220,10 +220,16 @@ function myGraph(el) {
             });
 
         var nodeEnter = node.enter().insert("g")
-            .attr("class", "node")
+            .attr("class", function(d){ return "node " + d.type + " " + App.env; })
             //.call(force.drag);
 
-        nodeEnter.append("circle")
+        // Drop-shadow borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
+        var circleShadow = nodeEnter.append("circle")
+            .attr("class", "nodeBlur")
+            .attr("r", 30)
+            .style("fill", 'black')
+
+        var circle = nodeEnter.append("circle")
             .attr("class", "bgCircle")
             .attr("r", r)
 
@@ -232,11 +238,20 @@ function myGraph(el) {
             .attr("r", r)
 
         nodeEnter.append("image")
-            .attr("xlink:href", function(d){ return "img/" + d.type + "-white-72x72.png"; })
+            .attr("xlink:href", function(d){ return "img/" + d.type + ".svg"; })
             .attr("class", "icon")
             .attr("x", -22).attr("y", -22)
             .attr("width", 44).attr("height", 44)
 
+        if (App.env == 'elite' || App.env == 'elitemax') {
+            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+            //var type = function(d){ return d.type; }
+            //if (bigservers.indexOf(function(d){ return d.type;})) {
+            bigservers.forEach(function(item, index, array) {
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
+            });
+        }
         node.exit().remove();
 
 
@@ -296,8 +311,8 @@ function myGraph(el) {
             nodes.forEach(function(d, i){
                 //if(d.type == "edgeserver"){d.y = 50; d.x = w/2;}
                 /*else*/ if(d.type == "appserver"){d.y = 200;}
-                else if(d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver"){d.y = 350;}
-                else if(d.type == "slavedbserver"){d.y = 500;}
+                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver"){d.y = 350;}
+                else if (d.type == "slavedbserver") { d.y = 500; }
                 //else if(d.type == "codeserver"){d.x=w-200; d.y=275}
                 //else if(d.type == "newrelic"){d.x=w-100; d.y=50}
                 //else{d.y = 500;}

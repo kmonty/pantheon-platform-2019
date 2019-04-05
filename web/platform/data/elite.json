@@ -1,20 +1,14 @@
 {
     "servers": [
         {
-            "id": "AAAAAAAA",
-            "type": "edgeserver",
-            "endpoint": "edge1",
-            "slave_of": null
-        },
-        {
             "id": "925e7577",
             "endpoint": "5aadf118-609f-4b81-8a53-05402afb1958",
             "type": "appserver",
             "slave_of": null
         },
         {
-            "id": "15455671",
-            "endpoint": "a143403b-5258-40fa-9bb1-2fc945411fd3",
+            "id": "elite15455671",
+            "endpoint": "elitea143403b-5258-40fa-9bb1-2fc945411fd3",
             "type": "slavedbserver",
             "slave_of": "ee63189cb21e4282913245150067377e"
         },
@@ -37,7 +31,7 @@
             "slave_of": null
         },
         {
-            "id": "4b95e834",
+            "id": "elite4b95e834",
             "endpoint": null,
             "type": "fileserver",
             "slave_of": null
@@ -55,8 +49,8 @@
             "slave_of": null
         },
         {
-            "id": "ee63189c",
-            "endpoint": "e065141a-12fc-4d68-87d2-9ca00a36742d",
+            "id": "eliteee63189c",
+            "endpoint": "elitee065141a-12fc-4d68-87d2-9ca00a36742d",
             "type": "dbserver",
             "slave_of": null
         },

@@ -3,8 +3,14 @@
   opacity: 1;
 }
 
-
-
+/* Borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/ */
+.nodeBlur {
+  stroke: none;
+  stroke-width: 1.5px;
+  pointer-events: none;
+  -webkit-filter: blur(8px);
+  opacity: 0.5;
+}
 
 .link {
   stroke: #999;
@@ -14,14 +20,12 @@
 }
 
 .link.dashed{
-    /*fill: none;*/
-    /*stroke: #999;*/
-    /*stroke-opacity: .6;*/
-    stroke-dasharray: 3;
-    /*stroke-dasharray: 20,10,5,5,5,10;*/
+  /*fill: none;*/
+  /*stroke: #999;*/
+  /*stroke-opacity: .6;*/
+  stroke-dasharray: 3;
+  /*stroke-dasharray: 20,10,5,5,5,10;*/
 }
-
-
 
 .link.active{
   /*stroke: #999;*/
@@ -36,24 +40,21 @@
   color: #000000;
 }
 
-.icon{
+.icon {
   width: 44px;
   height: 44px;
 }
 
-
-.appserver, .edgeserver, .fileserver, .dbserver, .slavedbserver, .indexserver, .cacheserver, .codeserver, .newrelic{
-  stroke: none;
-
-  background: #313945;
+.appserver, .edgeserver, .fileserver, .dbserver, .slavedbserver, .indexserver, .cacheserver, .codeserver, .newrelic {
+  background: #FFF;
   position: relative;
   transition: all 0.3s ease;
 }
 
 .inactive .appserver, .inactive .edgeserver, .inactive .fileserver, .inactive .dbserver, .inactive .slavedbserver, .inactive .indexserver, .inactive .cacheserver, .inactive .codeserver, .inactive .newrelic{
   stroke: none;
-  fill: #B5C0C3;
-  background-color: #B5C0C3;
+  fill: #FFF;
+  background-color: #FFF;
   position: relative;
   transition: all 0.3s ease;
 }
@@ -69,8 +70,6 @@
 .node.inactive:hover .codeserver,
 .node.inactive:hover .newrelic{
   cursor: pointer;
-  fill: #686F77;
-  background-color: #9EA5A9;
   transition: all 0.2s ease;
 }
 

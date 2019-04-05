@@ -5,10 +5,10 @@ var maxWidth = 1200;
 var install_dir = "platform/";
 
 var _marketing = {
-    'edgeserver'   :["Pantheon Edge", "The exterior of Pantheon — the part that directly touches the public internet. The Edge has a built-in, ultra-fast cache that's automatically enabled for every site. It improves page load times for our customers and helps sites to cruise through viral traffic spikes without breaking a sweat."],
+    'edgeserver'   :["Pantheon's Edge", "The edge has a built-in, ultra-fast cache that's automatically enabled for every site. It improves page load times for our customers and helps sites to cruise through viral traffic spikes without breaking a sweat."],
     'appserver'    :["Application Container", "The essence of a runtime container is a highly tuned PHP-FPM worker and its connections to the outside world. Incoming requests come via an nginx web server which handles requests for static assets, and passes dynamic requests to PHP."],
     'dbserver'     :["Database Server","The Database Service uses MariaDB and a container architecture similar to the Runtime Matrix to provision DBs and perform workflow operations. Instead of scaling via load-balancing, the DB layer can provide redundancy and horizontal scalability by supporting a self-healing replication topology, which is managed automatically."],
-    'slavedbserver':["Failover Database Server(Slave)","The Database Service uses MariaDB and a container architecture similar to the Runtime Matrix to provision DBs and perform workflow operations. Instead of scaling via load-balancing, the DB layer can provide redundancy and horizontal scalability by supporting a self-healing replication topology, which is managed automatically."],
+    'slavedbserver':["Failover Database Server(Replica)","The Database Service uses MariaDB and a container architecture similar to the Runtime Matrix to provision DBs and perform workflow operations. Instead of scaling via load-balancing, the DB layer can provide redundancy and horizontal scalability by supporting a self-healing replication topology, which is managed automatically."],
     'cacheserver'  :["Redis","Available for your applications to use in order to speed up processing."],
     'fileserver'   :["Pantheon File System","Our PFS (Pantheon File System) is a breakthrough in network-attached storage. It is backed by a self-healing elastic cluster architecture, and its advanced FUSE client rivals local on-disk filesystems for performance, thanks to a thoroughly modern leveldb caching layer."],
     'newrelic'     :["New Relic APM","It’s about gaining actionable, real-time business insights from the billions of metrics your software is producing, including user click streams, mobile activity, end user experiences and transactions.<img src='img/newrelic-graph.png'>"],
@@ -35,21 +35,31 @@ App.DiagramRoute = Ember.Route.extend({
       if(location.hostname == "localhost"){
         target = "data/servers.json"
       }
-      //load the hard coded site plans
+      //load the hard coded site plans.
+      // Note: there are no site plans for dev/test/live locally.
       if(App.env == 'elite'){
         target = install_dir + "data/elite.json";
       }
       else if(App.env == 'elitemax'){
         target = install_dir + "data/elitemax.json";
       }
-      else if(App.env == 'business'){
-        target = install_dir + "data/business.json";
+      else if(App.env == 'basic'){
+        target = install_dir + "data/basic.json";
       }
-      else if(App.env == 'personal'){
-        target = install_dir + "data/personal.json";
+      else if(App.env == 'performancesmall'){
+        target = install_dir + "data/performancesmall.json";
       }
-      else if(App.env == 'professional'){
-        target = install_dir + "data/professional.json";
+      else if(App.env == 'performancemedium'){
+        target = install_dir + "data/performancemedium.json";
+      }
+      else if(App.env == 'performancelarge'){
+        target = install_dir + "data/performancelarge.json";
+      }
+      else if(App.env == 'performancexl'){
+        target = install_dir + "data/performancexl.json";
+      }
+      else if(App.env == 'multiplesites'){
+        target = install_dir + "data/multiplesites.json";
       }
       //load the actual site based on the environment selected
       $.get("/"+target+"?env="+params.env_id, function(d){
@@ -82,11 +92,47 @@ App.NavView = Ember.View.extend({
   templateName: 'nav',
   didInsertElement: function(){
     var self = this;
+    // Old code for dev/test/live.
     $('li.link').removeClass('active');
     $('li.link.'+App.env).addClass('active');
     $(window).on('hashchange', function() {
       $('li.link').removeClass('active');
       $('li.link.'+App.env).addClass('active');
+    });
+
+    // Array of environments.
+    var environments = {
+      'basic': 'Basic',
+      'performancesmall': 'Performance (Small)',
+      'performancemedium': 'Performance (Medium)',
+      'performancelarge': 'Performance (Large)',
+      'performancexl': 'Performance (Extra Large)',
+      'elite': 'Elite',
+      'elitexl': 'Elite (Traffic Spike)',
+      'multiplesites': 'Select'
+    };
+
+    // New code for environments.
+    $('li.dropdown ul li').removeClass('active');
+    $('li.dropdown ul li.' + App.env).addClass('active');
+    if (App.env != 'multiplesites') {
+      $('li.dropdown').addClass('highlighted');
+    }
+    else {
+      $('li.dropdown').removeClass('highlighted');
+    }
+    // Switch name of environment in drop down.
+    $('a.dropdown-toggle span').html(environments[App.env]);
+    $(window).on('hashchange', function() {
+      $('li.dropdown ul li').removeClass('active');
+      $('li.dropdown ul li.' + App.env).addClass('active');
+      $('a.dropdown-toggle span').html(environments[App.env]);
+      if (App.env != 'multiplesites') {
+        $('li.dropdown').addClass('highlighted');
+      }
+      else {
+        $('li.dropdown').removeClass('highlighted');
+      }
     });
   },
 });
@@ -128,9 +174,9 @@ App.InfobarContentView = Ember.View.extend({
       self.set("controller.title", _marketing[node.type][0]);
       self.set("controller.text", _marketing[node.type][1]);
       var icoColor = "white";
-      self.set("controller.icon", "/platform/img/" + node.type + "-white-72x72.png");
+      self.set("controller.icon", "/platform/img/" + node.type + ".svg");
       $("#infobarContainer").removeClass().addClass(node.type);
-      $(".infobarContent").find("img.headerIcon").attr("src", "/platform/img/" + node.type + "-" + icoColor + "-72x72.png");
+      $(".infobarContent").find("img.headerIcon").attr("src", "/platform/img/" + node.type + ".svg");
       infobarViewInstance.open();
     }
     else{

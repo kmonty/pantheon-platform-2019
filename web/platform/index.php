@@ -6,8 +6,9 @@
 
 setcookie('NO_CACHE', '1');
 
-if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')){
-  header("Location: index.html#/diagram/live");
+// Redirect to the proper page on first page load.
+if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')) {
+  header("Location: index.html#/diagram/basic");
   die();
 }
 

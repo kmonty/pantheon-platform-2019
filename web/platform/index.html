@@ -19,34 +19,27 @@
   </script>
 
   <script type='text/x-handlebars' data-template-name="diagram">
-    <div id="internet">
-      <h4>Incoming traffic</h4>
-      <div id="thecloud">
-        <div class="circleIcon">
-          <img src="img/User-icon-white-72x72.png" />
+    <div id="demo-container">
+      <div id="internet" class="demo-container-section">
+        <h4 class="with-subtitle">Incoming traffic</h4>
+        <h5 class="subtitle">Up to 125K/month</h5>
+        <div id="thecloud">
+          <div class="circleIcon">
+            <img src="img/incoming-traffic.svg" />
+          </div>
         </div>
+      </div>
+      <div id="edge" class="demo-container-section">
+        <h4 class="with-subtitle">Managed HTTPS via Let's Encrypt <img src="img/le-logo-lockonly.svg" /></h4>
+        <h5 class="subtitle">Global CDN with <strong>37.5 Tbps</strong> in Capacity</h5>
+        <div id="globalcdn">
+          <img src="img/pantheon-platform-map@2x.png" alt="Pantheon's Global CDN" height="120" data-toggle="modal" data-target="#myModal" />
+        </div>
+      </div>
+      <div id="diagramContainer" class="demo-container-section">
+        <h4>Pantheon Data Center: Google Cloud #1 <img src="img/google-cloud.svg" /></h4>
       </div>
     </div>
-    <div id="edge">
-      <h4>Pantheon Global Edge</h4>
-      <div id="pops">
-        <div class="circleIcon">
-          <img src="img/globe-white_72x72.png" />
-        </div>
-        <div class="circleIcon">
-          <img src="img/globe-white_72x72.png" />
-        </div>
-        <div class="circleIcon">
-          <img src="img/globe-white_72x72.png" />
-        </div>
-        <div class="circleIcon">
-          <img src="img/globe-white_72x72.png" />
-        </div>
-      </div>
-    </div>
-      <div id="diagramContainer">
-        <h4>Pantheon Platform</h4>
-      </div>
   </script>
 
   <script type='text/x-handlebars' data-template-name="nav">
@@ -54,26 +47,31 @@
       <div class="container-fluid">
 
         <div class="navbar-header">
-          <a class="navbar-brand logo"><img src='img/fist-transparent.png' height='48px'/>The Pantheon Platform</a>
-
-
+          <a class="navbar-brand logo"><img src="img/pantheon-fist-icon.svg" height="48px" />The Pantheon Platform</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class='link dev'><a href="#/diagram/dev"><span class="glyphicon glyphicon-wrench"></span> Dev</a></li>
+            <!--<li class='link dev'><a href="#/diagram/dev"><span class="glyphicon glyphicon-wrench"></span> Dev</a></li>
             <li class='link test'><a href="#/diagram/test"><span class="glyphicons glyphicons-equalizer"></span> Test</a></li>
-            <li class='link live'><a href="#/diagram/live"><span class="glyphicons glyphicons-cardio"></span> Live</a></li>
+            <li class='link live'><a href="#/diagram/live"><span class="glyphicons glyphicons-cardio"></span> Live</a></li>-->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Service Levels <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Service Level: <span>Select</span> <b class="glyphicon glyphicon-chevron-down"></b></a>
               <ul class="dropdown-menu">
-                <li class="personal"><a href="#/diagram/personal">Personal</a></li>
-                <li class="professional"><a href="#/diagram/professional">Professional</a></li>
-                <li class="business"><a href="#/diagram/business">Business</a></li>
+                <li class="basic"><a href="#/diagram/basic">Basic</a></li>
+                <li class="performancesmall dropdown-submenu-header"><a href="#/diagram/performancesmall">Performance</a>
+                  <ul class="dropdown-submenu">
+                    <li class="performancesmall"><a href="#/diagram/performancesmall">Small</a></li>
+                    <li class="performancemedium"><a href="#/diagram/performancemedium">Medium</a></li>
+                    <li class="performancelarge"><a href="#/diagram/performancelarge">Large</a></li>
+                    <li class="performancexl"><a href="#/diagram/performancexl">Extra Large</a></li>
+                  </ul>
+                </li>
                 <li class="elite"><a href="#/diagram/elite">Elite</a></li>
-                <li class="elitemax"><a href="#/diagram/elitemax">Elite (Traffic Spike) </a></li>
+                <li class="elitemax"><a href="#/diagram/elitemax">Elite Traffic Spike</a></li>
               </ul>
             </li>
+            <li class="link multiplesites"><a href="#/diagram/multiplesites">Multiple Sites</a></li>
           </ul>
         </div>
       </div>
@@ -89,8 +87,10 @@
   <script type='text/x-handlebars' data-template-name="infobarContent">
     <div class="infobarContent">
       <div class="header">
-          <img class='headerIcon'/>
-          <h1>{{controller.title}}</h1>
+        <div class="img">
+          <img class="headerIcon" />
+        </div>
+        <h1>{{controller.title}}</h1>
       </div>
       <div class="body">
         <p>{{{controller.text}}}</p>
@@ -110,35 +110,69 @@
   <script  type="text/javascript">
   $(document).ready(function(){
 
-    $(document).on("click",".dropdown-menu > li",function(){
-      var user_image ='<div class="circleIcon"><img src="img/User-icon-white-72x72.png"/></div>';
-      var className = $(this).attr('class');
+    var user_image ='<div class="circleIcon"><img src="img/incoming-traffic.svg" /></div>';
+
+    $(document).on("click", ".dropdown-menu li a", function() {
+      // Had to change to this target the immediate parent for nested menus.
+      // Use .split() to only get the first class name if multiple.
+      var className = $(this).parent('li').attr('class').split(' ')[0];
       $("#thecloud").empty();
+      $('#diagramContainer').removeClass('multiplesites-container');
       if (className == "elite"){
         for (i=0;i<8;i++){
           $(user_image).appendTo("#thecloud");
-
         }
       } else if(className =="elitemax"){
         for (i=0;i<12;i++){
           $(user_image).appendTo("#thecloud");
-
         }
-      } else if(className =="business"){
-        for (i=0;i<4;i++){
-          $(user_image).appendTo("#thecloud");
-
-        }
-      } else if(className =="professional"){
+      } else if(className =="performancesmall"){
         for (i=0;i<2;i++){
           $(user_image).appendTo("#thecloud");
+        }
+      } else if(className =="performancemedium"){
+        for (i=0;i<3;i++){
+          $(user_image).appendTo("#thecloud");
+        }
+      } else if(className =="performancelarge"){
+        for (i=0;i<4;i++){
+          $(user_image).appendTo("#thecloud");
+        }
+      } else if(className =="performancexl"){
+        for (i=0;i<5;i++){
+          $(user_image).appendTo("#thecloud");
 
         }
-      } else if (className =="personal"){
+      } else if (className =="basic"){
         $(user_image).appendTo("#thecloud");
+      } else if (className =="multiplesites"){
+        // For multiplesites, add the class to the diagram container for the
+        // bg image.
+        $(user_image).appendTo("#thecloud");
+        $('#diagramContainer').addClass('multiplesites-container');
       }
+    });
+
+    $(document).on("click", "li.multiplesites a", function() {
+      // For multiplesites, add the class to the diagram container for the
+      // bg image.
+      $("#thecloud").empty();
+      $(user_image).appendTo("#thecloud");
+      $('#diagramContainer').addClass('multiplesites-container');
     });
 });
   </script>
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:80%">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+          <img class="cdn-map" src="img/pantheon-platform-map@2x.png" />
+        </div>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
