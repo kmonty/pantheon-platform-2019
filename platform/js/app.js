@@ -109,8 +109,20 @@ App.NavView = Ember.View.extend({
       'performancelarge': 'Performance (Large)',
       'performancexl': 'Performance (Extra Large)',
       'elite': 'Elite',
-      'elitexl': 'Elite (Traffic Spike)',
+      'elitemax': 'Elite (Traffic Spike)',
       'multiplesites': 'Select'
+    };
+
+    // Array of traffic strings.
+    var traffic = {
+      'basic': 'Up to 125K/month',
+      'performancesmall': 'Up to 125K/month',
+      'performancemedium': 'Up to 250K/month',
+      'performancelarge': 'Up to 750K/month',
+      'performancexl': 'Up to 1.5M/month',
+      'elite': 'Unlimited',
+      'elitemax': 'Unlimited++',
+      'multiplesites': 'Up to 125K/month'
     };
 
     // New code for environments.
@@ -122,6 +134,7 @@ App.NavView = Ember.View.extend({
     else {
       $('li.dropdown').removeClass('highlighted');
     }
+    $('#internet h5.subtitle').html(traffic[App.env]);
     // Switch name of environment in drop down.
     $('a.dropdown-toggle span').html(environments[App.env]);
     $(window).on('hashchange', function() {
@@ -134,6 +147,7 @@ App.NavView = Ember.View.extend({
       else {
         $('li.dropdown').removeClass('highlighted');
       }
+      $('#internet h5.subtitle').html(traffic[App.env]);
     });
   },
 });
