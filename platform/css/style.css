@@ -88,6 +88,11 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   z-index: 2;
 }
 
+#globalcdn img {
+  margin-left: 50%;
+  cursor: pointer;
+}
+
 .circleIcon img {
   margin: 0px 18px;
   display: block;
@@ -266,6 +271,25 @@ a.logo {
   border-radius: 0; /* Undo bootstrap default. */
   border: 0; /* Undo bootstrap default. */
   margin-bottom: 0;
+}
+
+.navbar > .container .navbar-brand,
+.navbar > .container-fluid .navbar-brand {
+  margin-left: 0; /* undoing Bootstrap default. */
+  height: auto;
+  display: inline-block;
+  line-height: 60px;
+  padding-bottom: 0;
+}
+
+.navbar-default .navbar-brand {
+  color: #000;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:active {
+  color: #000;
 }
 
 .navbar-default .navbar-nav > li {
