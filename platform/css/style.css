@@ -282,6 +282,12 @@ a.logo {
   padding-bottom: 0;
 }
 
+/* Undoing bootstrap default to allow disaster/multisites links to be floated
+ * right. */
+.navbar-nav {
+  float: none;
+}
+
 .navbar-default .navbar-brand {
   color: #000;
 }
@@ -297,6 +303,10 @@ a.logo {
   margin: 0 30px;
 }
 
+.navbar-default .navbar-nav > li.link {
+  float: right;
+}
+
 .navbar-default .navbar-nav > li.active,
 .navbar-default .navbar-nav > li.open,
 .navbar-default .navbar-nav > li.highlighted {
@@ -307,6 +317,7 @@ a.logo {
   letter-spacing: 0.5px;
   padding: 0;
   line-height: 60px;
+  color: #000;
   background: transparent;
 }
 
