@@ -61,10 +61,10 @@ App.DiagramRoute = Ember.Route.extend({
       }
       else if(App.env == 'multiplesites'){
         target = install_dir + "data/multiplesites.json";
-      }/*
+      }
       else if(App.env == 'disaster'){
         target = install_dir + "data/disaster.json";
-      }*/
+      }
       //load the actual site based on the environment selected
       $.get("/"+target+"?env="+params.env_id, function(d){
       if(!App.mySite){

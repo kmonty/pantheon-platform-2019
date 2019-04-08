@@ -37,7 +37,30 @@
         </div>
       </div>
       <div id="diagramContainer" class="demo-container-section">
-        <h4>Pantheon Data Center: Google Cloud #1 <img src="img/google-cloud.svg" /></h4>
+        <h4 id="pantheon-data-center-main-title">Pantheon Data Center: Google Cloud #1 <img src="img/google-cloud.svg" /></h4>
+        <h4 id="pantheon-data-center-multisite-title">Pantheon Data Center</h4>
+        <div id="disaster-content">
+          <div class="disaster-graph first">
+            <p class="title"><strong>Pantheon Data Center</strong> <span>/</span> Main</p>
+          </div>
+          <div class="disaster-graph second">
+            <p class="title"><strong>Pantheon Data Center</strong> <span>/</span> Fail Over</p>
+          </div>
+          <div id="arrowAnim" style="display: none;">
+            <div class="arrowSliding">
+              <div class="arrow"></div>
+            </div>
+            <div class="arrowSliding delay1">
+              <div class="arrow"></div>
+            </div>
+            <div class="arrowSliding delay2">
+              <div class="arrow"></div>
+            </div>
+            <div class="arrowSliding delay3">
+              <div class="arrow"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </script>
@@ -120,6 +143,8 @@
       $("#thecloud").empty();
       $('#diagramContainer').removeClass('multiplesites-container');
       $('#diagramContainer').removeClass('disaster-container');
+      // Remove active links from top level nav items.
+      $('.navbar-nav li.link').removeClass('active');
       if (className == "elite"){
         for (i=0;i<8;i++){
           $(user_image).appendTo("#thecloud");
@@ -164,6 +189,8 @@
       $("#thecloud").empty();
       $('#diagramContainer').removeClass('disaster-container');
       $(user_image).appendTo("#thecloud");
+      $('.navbar-nav li.link').removeClass('active');
+      $(this).parent('li').addClass('active');
       $('#diagramContainer').addClass('multiplesites-container');
     });
 
@@ -173,8 +200,12 @@
       $("#thecloud").empty();
       $('#diagramContainer').removeClass('multiplesites-container');
       $(user_image).appendTo("#thecloud");
+      $('.navbar-nav li.link').removeClass('active');
+      $(this).parent('li').addClass('active');
       $('#diagramContainer').addClass('disaster-container');
-      $('#diagramContainer').clone().appendTo('#demo-container');
+      // Below is experimental code to do live disaster recovery content cloning.
+      // Needs refinement.
+      //$('#diagramContainer').clone().appendTo('#demo-container');
     });
 });
   </script>

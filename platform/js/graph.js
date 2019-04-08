@@ -250,6 +250,7 @@ function myGraph(el) {
             bigservers.forEach(function(item, index, array) {
               nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
               nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 56);
             });
         }
         node.exit().remove();
