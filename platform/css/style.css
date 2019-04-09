@@ -137,7 +137,7 @@ h4#pantheon-data-center-multisite-title {
 }
 
 .multiplesites-container {
-  background: url('../img/multiplesites.png') no-repeat 50% top;
+  background: url('../img/multiplesites.png') no-repeat 50% center;
   background-size: 100%;
 }
 
@@ -464,7 +464,7 @@ a.logo {
   width: 42%;
   min-height: 427px;
   box-shadow: 0 2px 26px 0 rgba(0, 0, 0, 0.2);
-  background: url('../img/disaster-recovery-graph.png') no-repeat left top;
+  background: url('../img/disaster-recovery-graph.png') no-repeat left center;
   background-size: 100%;
 }
 
