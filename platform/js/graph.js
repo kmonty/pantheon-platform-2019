@@ -96,9 +96,12 @@ function myGraph(el) {
         for (var i in nodes) {if (nodes[i]["id"] === id) return i};
     }
 
-    var bg = [
+    /*var bg = [
         {"id":"edgeserver", "pos":50},
         {"id":"appserver", "pos":200}
+    ];*/
+    var bg = [
+        {"id":"appserver", "pos":50}
     ];
 
     var color = d3.scale.category20();
@@ -106,7 +109,7 @@ function myGraph(el) {
     // set up the D3 visualisation in the specified element
     var w = $(el).innerWidth(),
         h = $(el).innerHeight(),
-        r = 36, //Circle radius
+        r = 36, // Circle radius.
         st = 50,
         bgcolor = 0,
         sw = 5,
@@ -135,7 +138,7 @@ function myGraph(el) {
         .gravity(1)
         .friction(.7)
         .linkStrength(function(d){
-            if(d.target.type == "newrelic" || d.target.type == "codeserver"){
+            if (d.target.type == "newrelic" || d.target.type == "codeserver"){
                 return 0;
             }
             return 1;
@@ -277,7 +280,7 @@ function myGraph(el) {
             //Highlight pertinent links
             //Sorry about the verbosity of this... I guess I am too tired to get this right without typing it out.
             var targetsOrSources = [];
-            link.classed("active",function(d){
+            link.classed("active", function(d) {
                 var active = false;
                 if(d.target.id == selectedNode.id){active = true; }
                 if(d.source.id == selectedNode.id){active = true; }
@@ -287,7 +290,7 @@ function myGraph(el) {
                 }
                 return active;
             });
-            node.classed("inactive",function(n){
+            node.classed("inactive", function(n) {
                 //No selection, bail.
                 if(!selectedNode){return false;}
                 if(targetsOrSources.indexOf(n) > -1){return false; }
@@ -296,7 +299,7 @@ function myGraph(el) {
             });
         }
 
-        //Updating on ticks
+        // Updating on ticks.
         force.on("tick", function(e) {
             // var desiredWidth = 1200;
             // var maxX = desiredWidth/2 + desiredWidth/4;
@@ -311,21 +314,28 @@ function myGraph(el) {
 
             nodes.forEach(function(d, i){
                 //if(d.type == "edgeserver"){d.y = 50; d.x = w/2;}
-                /*else*/ if(d.type == "appserver"){d.y = 200;}
-                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver"){d.y = 350;}
-                else if (d.type == "slavedbserver") { d.y = 500; }
+                /*else*/
+                /** CONFIG: Set default y-axis placement for nodes. */
+                if (d.type == "appserver") {
+                  d.y = 100;
+                }
+                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver") {
+                  d.y = 250;
+                }
+                else if (d.type == "slavedbserver") { d.y = 400; }
                 //else if(d.type == "codeserver"){d.x=w-200; d.y=275}
                 //else if(d.type == "newrelic"){d.x=w-100; d.y=50}
                 //else{d.y = 500;}
             });
 
-              // var q = d3.geom.quadtree(nodes),
-              //     i = 0,
-              //     n = nodes.length;
+          // @todo this only works on load. On update?
+               var q = d3.geom.quadtree(nodes),
+                   i = 0,
+                   n = nodes.length;
 
-              // while (++i < n) {
-              //   q.visit(collide(nodes[i]));
-              // }
+               while (++i < n) {
+                 q.visit(collide(nodes[i]));
+               }
 
             var k = 20 * e.alpha;
             // links.forEach(function(d, i) {
@@ -347,7 +357,7 @@ function myGraph(el) {
                 .attr("y2", function(d) { return d.target.y; });
         });
 
-        var collide = function(node){
+        var collide = function(node) {
           var r = node.radius + 30,
               nx1 = node.x - r,
               nx2 = node.x + r,
