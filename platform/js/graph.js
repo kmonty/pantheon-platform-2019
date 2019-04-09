@@ -43,13 +43,13 @@ function myGraph(el) {
         }
         else if(node.type == "newrelic"){
             node.fixed = true;
-            node.x=300;
-            node.y=150;
+            node.x=100;
+            node.y=275;
         }
         else if(node.type == "codeserver"){
             node.fixed = true;
-            node.x=300;
-            node.y=275;
+            node.x=100;
+            node.y=150;
         }
         nodes.push(node);
         update();
