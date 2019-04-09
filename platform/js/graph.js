@@ -248,12 +248,38 @@ function myGraph(el) {
 
         if (App.env == 'elite' || App.env == 'elitemax') {
             var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            //var type = function(d){ return d.type; }
-            //if (bigservers.indexOf(function(d){ return d.type;})) {
             bigservers.forEach(function(item, index, array) {
               nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
               nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
               nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 56);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 82).attr("height", 82).attr("x", -41).attr("y", -41);
+            });
+        }
+        else if (App.env == 'performancexl') {
+            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+            bigservers.forEach(function(item, index, array) {
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 51);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 48);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 51);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 74).attr("height", 74).attr("x", -37).attr("y", -37);
+            });
+        }
+        else if (App.env == 'performancelarge') {
+            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+            bigservers.forEach(function(item, index, array) {
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 46);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 43);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 46);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 64).attr("height", 64).attr("x", -32).attr("y", -32);
+            });
+        }
+        else if (App.env == 'performancemedium') {
+            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+            bigservers.forEach(function(item, index, array) {
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 41);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 38);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 41);
+              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 54).attr("height", 54).attr("x", -27).attr("y", -27);
             });
         }
         node.exit().remove();

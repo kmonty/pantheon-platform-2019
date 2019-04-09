@@ -25,7 +25,7 @@
             "slave_of": null
         },
         {
-            "id": "4b95e834",
+            "id": "pxl4b95e834",
             "endpoint": null,
             "type": "fileserver",
             "slave_of": null
@@ -43,8 +43,8 @@
             "slave_of": null
         },
         {
-            "id": "ee63189c",
-            "endpoint": "e065141a-12fc-4d68-87d2-9ca00a36742d",
+            "id": "pxlee63189c",
+            "endpoint": "pxle065141a-12fc-4d68-87d2-9ca00a36742d",
             "type": "dbserver",
             "slave_of": null
         },
