@@ -246,6 +246,8 @@ function myGraph(el) {
             .attr("x", -22).attr("y", -22)
             .attr("width", 44).attr("height", 44)
 
+        // @todo. So much code repeatition! Gross! This can be made into a
+        // func, but sloppy last-min fix was deployed here.
         if (App.env == 'elite' || App.env == 'elitemax') {
             var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
             bigservers.forEach(function(item, index, array) {

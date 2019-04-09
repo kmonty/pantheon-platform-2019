@@ -146,6 +146,7 @@
       $('#diagramContainer').removeClass('disaster-container');
       // Remove active links from top level nav items.
       $('.navbar-nav li.link').removeClass('active');
+      $('#internet h5.subtitle').show();
       if (className == "elite"){
         for (i=0;i<8;i++){
           $(user_image).appendTo("#thecloud");
@@ -179,7 +180,9 @@
       else if (className == "disaster"){
         // For disaster, add the class to the diagram container for the
         // bg image.
-        $(user_image).appendTo("#thecloud");
+        for (i=0;i<8;i++){
+          $(user_image).appendTo("#thecloud");
+        }
         $('#diagramContainer').addClass('disaster-container');
       }
     });
@@ -189,10 +192,13 @@
       // bg image.
       $("#thecloud").empty();
       $('#diagramContainer').removeClass('disaster-container');
-      $(user_image).appendTo("#thecloud");
+      for (i=0;i<8;i++){
+        $(user_image).appendTo("#thecloud");
+      }
       $('.navbar-nav li.link').removeClass('active');
       $(this).parent('li').addClass('active');
       $('#diagramContainer').addClass('multiplesites-container');
+      $('#internet h5.subtitle').hide();
     });
 
     $(document).on("click", "li.disaster a", function() {
@@ -200,10 +206,13 @@
       // bg image.
       $("#thecloud").empty();
       $('#diagramContainer').removeClass('multiplesites-container');
-      $(user_image).appendTo("#thecloud");
+      for (i=0;i<8;i++){
+        $(user_image).appendTo("#thecloud");
+      }
       $('.navbar-nav li.link').removeClass('active');
       $(this).parent('li').addClass('active');
       $('#diagramContainer').addClass('disaster-container');
+      $('#internet h5.subtitle').hide();
       // Below is experimental code to do live disaster recovery content cloning.
       // Needs refinement.
       //$('#diagramContainer').clone().appendTo('#demo-container');
