@@ -147,32 +147,22 @@ function myGraph(el) {
             //var dist = 10 + (10*d.source.links.length)
             //return dist;
             if(d.target.type == "codeserver" || d.target.type == "newrelic" || d.source.type == "codeserver" || d.source.type == "newrelic"){
-                return w / 2;
+                return w/2;
             }
-            if(d.source.links.length > 5 || d.target.type == "appserver" || d.source.type == "appserver"){
-                return 50;
+            if(d.source.links.length > 5 || d.target.type == "appserver"){
+                return 150;
             }
             return 150;
         })//Could be a function
-        /*.charge(function(d){
-            if (d.type == "appserver"){
+        .charge(function(d){
+            if(d.type == "appserver"){
                 return -20000;
             }
             else if(d.type=="newrelic" || d.type=="codeserver"){
                 return 0;
             }
             return -20000;
-        })//Could be a function*/
-        .charge(function(d, i) {
-          if (d.type == "appserver") {
-            console.log('app');
-            return -50000;
-          }
-          else {
-            console.log("else");
-            return -25000;
-          }
-        })
+        })//Could be a function
         .size([w, h]);
 
     var nodes = force.nodes(),
@@ -294,14 +284,6 @@ function myGraph(el) {
               nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 54).attr("height", 54).attr("x", -27).attr("y", -27);
             });
         }
-
-//        var q = d3.geom.quadtree(nodes),
-//             i = 0,
-//             n = nodes.length;
-//         while (++i < n) {
-//           q.visit(collide(nodes[i]));
-//         }
-
         node.exit().remove();
 
 
@@ -375,13 +357,13 @@ function myGraph(el) {
             });
 
           // @todo this only works on load. On update?
-//               var q = d3.geom.quadtree(nodes),
-//                   i = 0,
-//                   n = nodes.length;
-//
-//               while (++i < n) {
-//                 q.visit(collide(nodes[i]));
-//               }
+               var q = d3.geom.quadtree(nodes),
+                   i = 0,
+                   n = nodes.length;
+
+               while (++i < n) {
+                 q.visit(collide(nodes[i]));
+               }
 
             var k = 20 * e.alpha;
             // links.forEach(function(d, i) {
@@ -403,35 +385,35 @@ function myGraph(el) {
                 .attr("y2", function(d) { return d.target.y; });
         });
 
+        var collide = function(node) {
+          var r = node.radius + 30,
+              nx1 = node.x - r,
+              nx2 = node.x + r,
+              ny1 = node.y - r,
+              ny2 = node.y + r;
+          return function(quad, x1, y1, x2, y2) {
+            if (quad.point && (quad.point !== node)) {
+              var x = node.x - quad.point.x,
+                  y = node.y - quad.point.y,
+                  l = Math.sqrt(x * x + y * y),
+                  r = node.radius + quad.point.radius;
+              if (l < r) {
+                l = (l - r) / l * .5;
+                node.x -= x *= l;
+                node.y -= y *= l;
+                quad.point.x += x;
+                quad.point.y += y;
+              }
+            }
+            return x1 > nx2
+                || x2 < nx1
+                || y1 > ny2
+                || y2 < ny1;
+          };
+        }
+
         // Restart the force layout.
         force.start();
-    }
-
-    var collide = function(node) {
-      var r = node.radius + 30,
-          nx1 = node.x - r,
-          nx2 = node.x + r,
-          ny1 = node.y - r,
-          ny2 = node.y + r;
-      return function(quad, x1, y1, x2, y2) {
-        if (quad.point && (quad.point !== node)) {
-          var x = node.x - quad.point.x,
-              y = node.y - quad.point.y,
-              l = Math.sqrt(x * x + y * y),
-              r = node.radius + quad.point.radius;
-          if (l < r) {
-            l = (l - r) / l * .5;
-            node.x -= x *= l;
-            node.y -= y *= l;
-            quad.point.x += x;
-            quad.point.y += y;
-          }
-        }
-        return x1 > nx2
-            || x2 < nx1
-            || y1 > ny2
-            || y2 < ny1;
-      };
     }
 
     // Make it all go
