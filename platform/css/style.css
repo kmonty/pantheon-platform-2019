@@ -257,29 +257,6 @@ a.logo {
 }
 
 /*------------------------NAVBAR---------------------------------*/
-/*
-@font-face {
-  font-family: 'Glyphicons Regular';
-  src: url("../fonts/glyphicons-regular.eot");
-  src: url("../fonts/glyphicons-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-regular.woff2") format("woff2"), url("../fonts/glyphicons-regular.woff") format("woff"), url("../fonts/glyphicons-regular.ttf") format("truetype"), url("../fonts/glyphicons-regular.svg#glyphiconsregular") format("svg"); }
-.glyphicons {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Regular';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  vertical-align: top;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-.glyphicons-wrench:before {
-    content: "\E440"; }
-.glyphicons-equalizer:before {
-      content: "\E586"; }
-.glyphicons-cardio:before {
-        content: "\E283"; }
-*/
 .navbar {
   box-shadow: 0 2px 26px 0 rgba(0, 0, 0, 0.2);
   height: 60px;
@@ -478,6 +455,11 @@ a.logo {
   margin-top: 2.5em;
   text-transform: uppercase;
   font-size: 16px;
+}
+
+.disaster-graph .title img {
+  max-height: 1em;
+  margin: -5px .1em 0 .1em;
 }
 
 .disaster-graph .title span {
