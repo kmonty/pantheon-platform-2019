@@ -46,14 +46,15 @@ h4#pantheon-data-center-multisite-title {
 }
 
 /* When on the multisites or disaster tabs,  show the correct title. */
-.multiplesites-container h4,
 .disaster-container h4 {
   display: none;
 }
 
+/* Removing this functionality for alternate titles for now.
 .multiplesites-container h4#pantheon-data-center-multisite-title {
   display: block;
 }
+*/
 
 .demo-container-section h4 img {
   vertical-align: bottom;
