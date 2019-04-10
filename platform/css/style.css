@@ -1,5 +1,5 @@
-// TabletGothic fonts.
-@font-face{font-family:'Tablet Gothic';font-weight:400;font-style:normal;src:url(../fonts/360074_3_0.woff2) format("woff2"),url(../fonts/360074_3_0.woff) format("woff");font-display:swap;}@font-face{font-family:'Tablet Gothic';font-weight:400;font-style:italic;src:url(../fonts/360074_2_0.woff2) format("woff2"),url(../fonts/360074_2_0.woff) format("woff");font-display:swap;}@font-face{font-family:'Tablet Gothic';font-weight:600;font-style:normal;src:url(../fonts/360074_4_0.woff2) format("woff2"),url(../fonts/360074_4_0.woff) format("woff");font-display:swap;}@font-face{font-family:'Tablet Gothic';font-weight:700;font-style:normal;src:url(../fonts/360074_1_0.woff2) format("woff2"),url(../fonts/360074_1_0.woff) format("woff");font-display:swap;}
+/* TabletGothic fonts.*/
+@font-face{font-family:'Tablet Gothic';font-weight:400;font-style:normal;src:url(../fonts/TabletGothic.woff2) format("woff2"),url(../fonts/TabletGothic.woff) format("woff");font-display:swap;}@font-face{font-family:'Tablet Gothic';font-weight:700;font-style:normal;src:url(../fonts/TabletGothic-Bold.woff2) format("woff2"),url(../fonts/TabletGothic-Bold.woff) format("woff");font-display:swap;}
 
 html,
 body {
@@ -254,6 +254,7 @@ a.logo {
 
 .logo > img {
   margin-right: 10px;
+  margin-top: -2px; /* Undoing fix to vertically center text for img. */
 }
 
 /*------------------------NAVBAR---------------------------------*/
@@ -282,6 +283,7 @@ a.logo {
 
 .navbar-default .navbar-brand {
   color: #000;
+  margin-top: 2px; /* Fix to vertically center text. */
 }
 
 .navbar-default .navbar-brand:hover,
@@ -301,6 +303,7 @@ a.logo {
 
 .navbar-default .navbar-nav > li.link {
   float: right;
+  text-transform: uppercase;
 }
 
 .navbar-default .navbar-nav > li.active,
@@ -313,6 +316,7 @@ a.logo {
   letter-spacing: 0.5px;
   padding: 0;
   line-height: 60px;
+  top: 2px; /* Make up for the bottom 4px border. */
   color: #000;
   background: transparent;
 }
