@@ -104,7 +104,7 @@ function myGraph(el) {
         {"id":"appserver", "pos":50}
     ];
 
-    var color = d3.scale.category20();
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
 
     // set up the D3 visualisation in the specified element
     var w = $(el).innerWidth(),
