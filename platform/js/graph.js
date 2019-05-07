@@ -1,421 +1,369 @@
 function myGraph(el) {
-    var self = this;
-    var classMap = {
-        'edgeserver'   :"server",
-        'appserver'    :"server",
-        'dbserver'     :"server",
-        'slavedbserver':"server",
-        'cacheserver'  :"server",
-        'fileserver'   :"server",
-        'newrelic'     :"server",
-        'indexserver'  :"server",
-        'codeserver'   :"server"
-    };
+  var self = this;
+  var nodes = [];
+  var links = [];
 
-    var _types = ['edgeserver', 'appserver', 'dbserver', 'slavedbserver', 'cacheserver', 'fileserver', 'newrelic', 'indexserver', 'codeserver'];
+  var classMap = {
+      'edgeserver'   :"server",
+      'appserver'    :"server",
+      'dbserver'     :"server",
+      'slavedbserver':"server",
+      'cacheserver'  :"server",
+      'fileserver'   :"server",
+      'newrelic'     :"server",
+      'indexserver'  :"server",
+      'codeserver'   :"server"
+  };
 
-    self._events = {
-        'node.selected'  :[],
-        'node.unselected':[]
+  var _types = ['edgeserver', 'appserver', 'dbserver', 'slavedbserver', 'cacheserver', 'fileserver', 'newrelic', 'indexserver', 'codeserver'];
+
+  self._events = {
+      'node.selected'  :[],
+      'node.unselected':[]
+  }
+
+  this.registerEvent = function(event, cb){
+      self._events[event].push(cb);
+  }
+
+  this._triggerEvent = function(event, target){
+      var e = {
+          "name": event,
+          "node": target
+      };
+      var listeners = self._events[event];
+      $.each(listeners, function(i, cb){
+          cb(e);
+      });
+  }
+
+  // Add and remove elements on the graph object
+  this.addNode = function (node) {
+      if(node.type == "edgeserver"){
+          node.fixed = true;
+          node.x = w/2;
+          node.y = 50;
+      }
+      else if(node.type == "newrelic"){
+          node.fixed = true;
+          node.x = 100;
+          node.y = 275;
+      }
+      else if(node.type == "codeserver"){
+          node.fixed = true;
+          node.x = 100;
+          node.y = 150;
+      }
+      nodes.push(node);
+      update();
+  }
+
+  this.removeNode = function (id) {
+      var i = 0;
+      var n = findNode(id);
+      while (i < links.length) {
+          if ((links[i]['source'] == n) || (links[i]['target'] == n)){
+              links.splice(i, 1);
+          }
+          else{
+              i++;
+          }
+      }
+      nodes.splice(findNodeIndex(id), 1);
+      update();
+  }
+
+  this.addLink = function (source, target){
+    if (findNode(source) && findNode(target)) {
+      links.push({"source": findNode(source), "target": findNode(target)});
+      update();
     }
+  }
 
-    this.registerEvent = function(event, cb){
-        self._events[event].push(cb);
-    }
-
-    this._triggerEvent = function(event, target){
-        var e = {
-            "name": event,
-            "node": target
-        };
-        var listeners = self._events[event];
-        $.each(listeners, function(i, cb){
-            cb(e);
-        });
-    }
-
-    // Add and remove elements on the graph object
-    this.addNode = function (node) {
-        if(node.type == "edgeserver"){
-            node.fixed = true;
-            node.x = w/2;
-            node.y = 50;
-        }
-        else if(node.type == "newrelic"){
-            node.fixed = true;
-            node.x=100;
-            node.y=275;
-        }
-        else if(node.type == "codeserver"){
-            node.fixed = true;
-            node.x=100;
-            node.y=150;
-        }
-        nodes.push(node);
-        update();
-    }
-
-    this.removeNode = function (id) {
-        var i = 0;
-        var n = findNode(id);
-        while (i < links.length){
-            if ((links[i]['source'] == n)||(links[i]['target'] == n)){
-                links.splice(i,1);
-            }
-            else{
-                i++;
-            }
-        }
-        nodes.splice(findNodeIndex(id),1);
-        update();
-    }
-
-    this.addLink = function (source, target){
-        // if(source.type == "newrelic" || target.type == "newrelic"){
-        //     // Don't factor these links in, they screw things up!
-        //     return;
-        // }
-        if(findNode(source) && findNode(target)){
-            links.push({"source":findNode(source),"target":findNode(target)});
-
-            update();
-        }
-    }
-
-    var findNode = function(id){
-        var toReturn = false;
-        $.each(nodes, function(i, obj){
-            if(obj.id == id){
-                toReturn = obj;
-            }
-        });
-        return toReturn;
-    }
-
-    var findNodeIndex = function(id){
-        for (var i in nodes) {if (nodes[i]["id"] === id) return i};
-    }
-
-    /*var bg = [
-        {"id":"edgeserver", "pos":50},
-        {"id":"appserver", "pos":200}
-    ];*/
-    var bg = [
-        {"id":"appserver", "pos":50}
-    ];
-
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-    // set up the D3 visualisation in the specified element
-    var w = $(el).innerWidth(),
-        h = $(el).innerHeight(),
-        r = 36, // Circle radius.
-        st = 50,
-        bgcolor = 0,
-        sw = 5,
-        fill = "#FFF";
-        //sc = "";
-
-    var vis = this.vis = d3.select(el).append("svg:svg")
-        .attr("width", w)
-        .attr("height", h)
-        .attr("stroke", st)
-        .attr("background", bgcolor)
-        .attr("fill", fill)
-        .attr("stroke-width", sw);
-        //.attr("class", sc);
-
-    var bgGroup = vis.insert("g").attr("class", "bgGroup");
-    var linkGroup = vis.insert("g").attr("class", "linkGroup");
-    var nodeGroup = vis.insert("g").attr("class", "nodeGroup");
-
-    // Remember the node that is selected.
-    var selectedNode = false;
-
-    var force = d3.layout.force()
-        //.chargeDistance(.10000)
-        //.alpha(0)
-        .gravity(1)
-        .friction(.7)
-        .linkStrength(function(d){
-            if (d.target.type == "newrelic" || d.target.type == "codeserver"){
-                return 0;
-            }
-            return 1;
-        })
-        .distance(function(d){
-            //var dist = 10 + (10*d.source.links.length)
-            //return dist;
-            if(d.target.type == "codeserver" || d.target.type == "newrelic" || d.source.type == "codeserver" || d.source.type == "newrelic"){
-                return w/2;
-            }
-            if(d.source.links.length > 5 || d.target.type == "appserver"){
-                return 150;
-            }
-            return 150;
-        })//Could be a function
-        .charge(function(d){
-            if(d.type == "appserver"){
-                return -20000;
-            }
-            else if(d.type=="newrelic" || d.type=="codeserver"){
-                return 0;
-            }
-            return -20000;
-        })//Could be a function
-        .size([w, h]);
-
-    var nodes = force.nodes(),
-        links = force.links();
-
-    vis.on("click", function(){
-        if(d3.event.defaultPrevented) return;
-        if(selectedNode){
-            self._triggerEvent("node.unselected",selectedNode);
-            selectedNode = false;
-            activate();
-        }
-        d3.event.stopPropagation();
+  var findNode = function(id){
+    var toReturn = false;
+    $.each(nodes, function(i, obj){
+      if (obj.id == id) {
+        toReturn = obj;
+      }
     });
-    var activate;
-    var update = function(){
+    return toReturn;
+  }
 
-        //Draw the bg
-        var bgLine = bgGroup.selectAll("g.bg")
-            .data(bg, function(d){return d.id;});
+  var findNodeIndex = function(id){
+    for (var i in nodes) { if (nodes[i]["id"] === id) return i};
+  }
 
-        bgLine.enter().insert("g")
-            .attr("class", "bg link")
-            .attr("x1", function(d) { return 0; })
-            .attr("x2", function(d) { return w; })
-            .attr("y1", function(d) { return d.pos; })
-            .attr("y2", function(d) { return d.pos; });
+  var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        bgLine.exit().remove();
+  // set up the D3 visualisation in the specified element
+  var w = $(el).innerWidth(),
+      h = $(el).innerHeight(),
+      r = 36, // Circle radius.
+      st = 50,
+      bgcolor = 0,
+      sw = 5,
+      fill = "#FFF";
+      //sc = "";
 
-        //Draw the nodes
-        var node = nodeGroup.selectAll("g.node")
-            .data(nodes, function(d) { return d.id;})
-            .on("click", function(d) {
-                if(d3.event.defaultPrevented) return; // ignore drag
-                nodeGroup.selectAll("g.node").attr("stroke", "#EFD01B");
-                nodeGroup.selectAll("g.node").attr("background", "#FFF");
-                nodeGroup.selectAll("g.node").attr("fill", "#FFF");
-                nodeGroup.selectAll("g.node").attr("stroke-width", 0);
-                //nodeGroup.selectAll("g.node").attr("class", "");
-                if(selectedNode.id == d.id){
-                    //Unselect if selected node is already selected, duh!
-                    selectedNode = false;
-                    self._triggerEvent("node.unselected",d);
-                }
-                else {
-                    selectedNode = d;
-                    d3.select(this).attr("stroke", "#EFD01B");
-                    d3.select(this).attr("stroke-width", 4);
-                    d3.select(this).attr("background", "#FFF");
-                    d3.select(this).attr("fill", "#FFF");
-                    //d3.select(this).attr("class", "svgClass");
-                    self._triggerEvent("node.selected", d);
-                }
+  //var vis = this.vis = d3.select(el).append("svg:svg")
+//        .attr("width", w)
+//        .attr("height", h)
+//        .attr("stroke", st)
+//        .attr("background", bgcolor)
+//        .attr("fill", fill)
+//        .attr("stroke-width", sw);
+      //.attr("class", sc);
 
-                activate();//force.resume();//update();
-                d3.event.stopPropagation();
-            });
+  var svg = d3.select(el).append("svg")
+    .attr("width", w)
+    .attr("height", h)
+    .attr("stroke", st)
+    .attr("background", bgcolor)
+    .attr("fill", fill)
+    .attr("stroke-width", sw);
+  var chartLayer = svg.append("g").classed("chartLayer", true)
+    .attr("width", w)
+    .attr("height", h);
 
-        var nodeEnter = node.enter().insert("g")
-            .attr("class", function(d){ return "node " + d.type + " " + App.env; })
-            //.call(force.drag);
+  // Remember the node that is selected.
+  var selectedNode = false;
 
-        // Drop-shadow borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
-        var circleShadow = nodeEnter.append("circle")
-            .attr("class", "nodeBlur")
-            .attr("r", 30)
-            .style("fill", 'black')
+//    var force = d3.force()
+//        //.chargeDistance(.10000)
+//        //.alpha(0)
+//        .gravity(1)
+//        .friction(.7)
+//        .linkStrength(function(d){
+//            if (d.target.type == "newrelic" || d.target.type == "codeserver"){
+//                return 0;
+//            }
+//            return 1;
+//        })
+//        .distance(function(d){
+//            //var dist = 10 + (10*d.source.links.length)
+//            //return dist;
+//            if(d.target.type == "codeserver" || d.target.type == "newrelic" || d.source.type == "codeserver" || d.source.type == "newrelic"){
+//                return w/2;
+//            }
+//            if(d.source.links.length > 5 || d.target.type == "appserver"){
+//                return 150;
+//            }
+//            return 150;
+//        })//Could be a function
+//        .charge(function(d){
+//            if(d.type == "appserver"){
+//                return -20000;
+//            }
+//            else if(d.type=="newrelic" || d.type=="codeserver"){
+//                return 0;
+//            }
+//            return -20000;
+//        })//Could be a function
+//        .size([w, h]);
+  
+  //var links = [];
+  //var links = d3.forceLink(links).id(function(d) { return d.index });
 
-        var circle = nodeEnter.append("circle")
-            .attr("class", "bgCircle")
-            .attr("r", r)
+  var simulation = d3.forceSimulation(nodes)
+    .force("collide", d3.forceCollide( function(d){ return d.r + 8 }).iterations(16) )
+    .force("link", d3.forceLink(links).id(function(d) { return d.index }))
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(w / 2, h / 2))
+    .force("y", d3.forceY(0))
+    .force("x", d3.forceX(0))
+    .on("tick", ticked);
+  
+  var linkGroup = svg.append("g").classed("linkGroup", true).selectAll(".link");
+  var nodeGroup = svg.append("g").classed("nodeGroup", true).selectAll(".node");
 
-        nodeEnter.append("circle")
-            .attr("class", function(d){ return "server "+d.type; })
-            .attr("r", r)
+//  var nodes = simulation.nodes();
+//    links = links.links();
 
-        nodeEnter.append("image")
-            .attr("xlink:href", function(d){ return "img/" + d.type + ".svg"; })
-            .attr("class", "icon")
-            .attr("x", -22).attr("y", -22)
-            .attr("width", 44).attr("height", 44)
+  svg.on("click", function(){
+      if (d3.event.defaultPrevented) return;
+      if (selectedNode) {
+        self._triggerEvent("node.unselected", selectedNode);
+        selectedNode = false;
+        activate();
+      }
+      d3.event.stopPropagation();
+  });
 
-        // @todo. So much code repeatition! Gross! This can be made into a
-        // func, but sloppy last-min fix was deployed here.
-        if (App.env == 'elite' || App.env == 'elitemax') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 56);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 82).attr("height", 82).attr("x", -41).attr("y", -41);
-            });
+  var ticked = function() {
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    node.attr("cx", function(d) { return d.x = Math.max(r, Math.min(w - r, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(r, Math.min(h - r, d.y)); });
+
+    nodes.forEach(function(d, i){
+      /** CONFIG: Set default y-axis placement for nodes. */
+      if (d.type == "appserver") {
+        d.y = 100;
+      }
+      else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver") {
+        d.y = 250;
+      }
+      else if (d.type == "slavedbserver") { d.y = 400; }
+    });
+
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+  }
+
+  var activate;
+  var update = function() {
+    // Apply the general update pattern to the nodes.
+    nodeGroup = nodeGroup.data(nodes);
+    nodeGroup.exit().remove();
+    nodeGroup = nodeGroup.enter().append("circle").attr("fill", function(d) { return color(d.id); }).attr("r", 8).merge(nodeGroup);
+    console.log(nodes);
+
+    // Apply the general update pattern to the links.
+    linkGroup = linkGroup.data(links);
+    linkGroup.exit().remove();
+    linkGroup = linkGroup.enter().append("line").merge(linkGroup);
+    console.log(links);
+
+    // Update and restart the simulation.
+    simulation.nodes(nodes);
+    simulation.force("link").links(links);
+    simulation.alpha(1).restart();
+    console.log('made it')
+/*
+    var link = svg.append("g")
+      .attr("class", "linkGroup1")
+      .selectAll("line")
+      //.data(links, function(d) { return d.source.id + "-" + d.target.id; })
+      .data(links)
+      .enter()
+      .append("line")
+      .attr("class", function(l) {
+        classes = ["link"];
+        if (l.target.type == "newrelic" || l.target.type=="codeserver") {
+          classes.push("dashed");
         }
-        else if (App.env == 'performancexl') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 51);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 48);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 51);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 74).attr("height", 74).attr("x", -37).attr("y", -37);
-            });
-        }
-        else if (App.env == 'performancelarge') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 46);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 43);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 46);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 64).attr("height", 64).attr("x", -32).attr("y", -32);
-            });
-        }
-        else if (App.env == 'performancemedium') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 41);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 38);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 41);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 54).attr("height", 54).attr("x", -27).attr("y", -27);
-            });
-        }
-        node.exit().remove();
+        return classes.join(" ");
+      })
 
-
-        //Draw the links
-        var link = linkGroup.selectAll("line.link")
-            .data(links, function(d) { return d.source.id + "-" + d.target.id; });
-
-        link.enter().insert("line")
-            .attr("class", function(l){
-                classes = ["link"];
-                if(l.target.type == "newrelic" || l.target.type=="codeserver"){
-                    classes.push("dashed");
-                }
-                return classes.join(" ");
-            });
-
-        link.exit().remove();
-
-
-        //Activate Links and Nodes based on node selection - called be event handlerss
-        activate = function(){
-            //Highlight pertinent links
-            //Sorry about the verbosity of this... I guess I am too tired to get this right without typing it out.
-            var targetsOrSources = [];
-            link.classed("active", function(d) {
-                var active = false;
-                if(d.target.id == selectedNode.id){active = true; }
-                if(d.source.id == selectedNode.id){active = true; }
-                if(active){
-                    if(d.target.id != selectedNode.id){targetsOrSources.push(d.target); }
-                    if(d.source.id != selectedNode.id){targetsOrSources.push(d.source); }
-                }
-                return active;
-            });
-            node.classed("inactive", function(n) {
-                //No selection, bail.
-                if(!selectedNode){return false;}
-                if(targetsOrSources.indexOf(n) > -1){return false; }
-                if(n.id == selectedNode.id){return false; }
-                return true;
-            });
-        }
-
-        // Updating on ticks.
-        force.on("tick", function(e) {
-            // var desiredWidth = 1200;
-            // var maxX = desiredWidth/2 + desiredWidth/4;
-            // var minX = desiredWidth/2 - desiredWidth/4;
-
-            node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-            // node.attr("cx", function(d) { return d.x = Math.max(minX+r, Math.min(maxX - r, d.x)); })
-            //     .attr("cy", function(d) { return d.y = Math.max(r, Math.min(h - r, d.y)); });
-            node.attr("cx", function(d) { return d.x = Math.max(r, Math.min(w - r, d.x)); })
-                .attr("cy", function(d) { return d.y = Math.max(r, Math.min(h - r, d.y)); });
-
-            nodes.forEach(function(d, i){
-                //if(d.type == "edgeserver"){d.y = 50; d.x = w/2;}
-                /*else*/
-                /** CONFIG: Set default y-axis placement for nodes. */
-                if (d.type == "appserver") {
-                  d.y = 100;
-                }
-                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver") {
-                  d.y = 250;
-                }
-                else if (d.type == "slavedbserver") { d.y = 400; }
-                //else if(d.type == "codeserver"){d.x=w-200; d.y=275}
-                //else if(d.type == "newrelic"){d.x=w-100; d.y=50}
-                //else{d.y = 500;}
-            });
-
-          // @todo this only works on load. On update?
-               var q = d3.geom.quadtree(nodes),
-                   i = 0,
-                   n = nodes.length;
-
-               while (++i < n) {
-                 q.visit(collide(nodes[i]));
-               }
-
-            var k = 20 * e.alpha;
-            // links.forEach(function(d, i) {
-            //     //Push up the source of the link a little.
-            //     //If it is the source of many it will be forced to the top of the vis.
-            //     //d.source.y -= k;
-            //     //d.target.y += k;
-
-            //     // //Make sure the edge servers float to the top.
-            //     // if(d.source.type == "edgeserver"){
-            //     //     d.source.y -= (1*k);
-            //     // }
-
-            // });
-
-            link.attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
-        });
-
-        var collide = function(node) {
-          var r = node.radius + 30,
-              nx1 = node.x - r,
-              nx2 = node.x + r,
-              ny1 = node.y - r,
-              ny2 = node.y + r;
-          return function(quad, x1, y1, x2, y2) {
-            if (quad.point && (quad.point !== node)) {
-              var x = node.x - quad.point.x,
-                  y = node.y - quad.point.y,
-                  l = Math.sqrt(x * x + y * y),
-                  r = node.radius + quad.point.radius;
-              if (l < r) {
-                l = (l - r) / l * .5;
-                node.x -= x *= l;
-                node.y -= y *= l;
-                quad.point.x += x;
-                quad.point.y += y;
+      //Draw the nodes
+      var node = nodes.selectAll("g.node")
+          .data(nodes, function(d) { return d.id;})
+          .on("click", function(d) {
+              if (d3.event.defaultPrevented) return; // ignore drag.
+              nodeGroup.selectAll("g.node").attr("stroke", "#EFD01B");
+              nodeGroup.selectAll("g.node").attr("background", "#FFF");
+              nodeGroup.selectAll("g.node").attr("fill", "#FFF");
+              nodeGroup.selectAll("g.node").attr("stroke-width", 0);
+              //nodeGroup.selectAll("g.node").attr("class", "");
+              if(selectedNode.id == d.id){
+                  //Unselect if selected node is already selected, duh!
+                  selectedNode = false;
+                  self._triggerEvent("node.unselected",d);
               }
-            }
-            return x1 > nx2
-                || x2 < nx1
-                || y1 > ny2
-                || y2 < ny1;
-          };
-        }
+              else {
+                  selectedNode = d;
+                  d3.select(this).attr("stroke", "#EFD01B");
+                  d3.select(this).attr("stroke-width", 4);
+                  d3.select(this).attr("background", "#FFF");
+                  d3.select(this).attr("fill", "#FFF");
+                  //d3.select(this).attr("class", "svgClass");
+                  self._triggerEvent("node.selected", d);
+              }
 
-        // Restart the force layout.
-        force.start();
-    }
+              activate();//force.resume();//update();
+              d3.event.stopPropagation();
+          });
 
-    // Make it all go
-    update();
+      var nodeEnter = node.enter().insert("g")
+          .attr("class", function(d){ return "node " + d.type + " " + App.env; })
+          //.call(force.drag);
+
+      // Drop-shadow borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
+      var circleShadow = nodeEnter.append("circle")
+          .attr("class", "nodeBlur")
+          .attr("r", 30)
+          .style("fill", 'black')
+
+      var circle = nodeEnter.append("circle")
+          .attr("class", "bgCircle")
+          .attr("r", r)
+
+      nodeEnter.append("circle")
+          .attr("class", function(d){ return "server " + d.type; })
+          .attr("r", r)
+
+      nodeEnter.append("image")
+          .attr("xlink:href", function(d){ return "img/" + d.type + ".svg"; })
+          .attr("class", "icon")
+          .attr("x", -22).attr("y", -22)
+          .attr("width", 44).attr("height", 44)
+
+      // @todo. So much code repeatition! Gross! This can be made into a
+      // func, but sloppy last-min fix was deployed here.
+      if (App.env == 'elite' || App.env == 'elitemax') {
+          var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+          bigservers.forEach(function(item, index, array) {
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 56);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 82).attr("height", 82).attr("x", -41).attr("y", -41);
+          });
+      }
+      else if (App.env == 'performancexl') {
+          var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+          bigservers.forEach(function(item, index, array) {
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 51);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 48);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 51);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 74).attr("height", 74).attr("x", -37).attr("y", -37);
+          });
+      }
+      else if (App.env == 'performancelarge') {
+          var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+          bigservers.forEach(function(item, index, array) {
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 46);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 43);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 46);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 64).attr("height", 64).attr("x", -32).attr("y", -32);
+          });
+      }
+      else if (App.env == 'performancemedium') {
+          var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
+          bigservers.forEach(function(item, index, array) {
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 41);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 38);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 41);
+            nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 54).attr("height", 54).attr("x", -27).attr("y", -27);
+          });
+      }
+
+      //Activate Links and Nodes based on node selection - called be event handlerss
+      activate = function(){
+          //Highlight pertinent links
+          //Sorry about the verbosity of this... I guess I am too tired to get this right without typing it out.
+          var targetsOrSources = [];
+          link.classed("active", function(d) {
+              var active = false;
+              if(d.target.id == selectedNode.id){active = true; }
+              if(d.source.id == selectedNode.id){active = true; }
+              if(active){
+                  if(d.target.id != selectedNode.id){targetsOrSources.push(d.target); }
+                  if(d.source.id != selectedNode.id){targetsOrSources.push(d.source); }
+              }
+              return active;
+          });
+          node.classed("inactive", function(n) {
+              //No selection, bail.
+              if(!selectedNode){return false;}
+              if(targetsOrSources.indexOf(n) > -1){return false; }
+              if(n.id == selectedNode.id){return false; }
+              return true;
+          });
+      }*/
+  }
+
+  // Make it all go
+  update();
 }
