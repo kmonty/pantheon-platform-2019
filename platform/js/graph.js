@@ -170,6 +170,9 @@ function myGraph(el) {
     .force("link", d3.forceLink(links).id(function(d) { return d.index }))
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(w / 2, h / 2))
+    .force('collision', d3.forceCollide().radius(function(d) {
+      return d.radius;
+    }))
     .force("y", d3.forceY(0))
     .force("x", d3.forceX(0))
     .on("tick", ticked);
@@ -177,7 +180,8 @@ function myGraph(el) {
   var linkGroup = svg.append("g").classed("linkGroup", true).selectAll(".link");
   var nodeGroup = svg.append("g").classed("nodeGroup", true).selectAll(".node");
 
-//  var nodes = simulation.nodes();
+ //var nodes = simulation.nodes();
+//  console.log(nodes);
 //    links = links.links();
 
   svg.on("click", function(){
@@ -212,25 +216,26 @@ function myGraph(el) {
         .attr("y2", function(d) { return d.target.y; });
   }
 
-  var activate;
+  //var activate;
   var update = function() {
     // Apply the general update pattern to the nodes.
     nodeGroup = nodeGroup.data(nodes);
     nodeGroup.exit().remove();
-    nodeGroup = nodeGroup.enter().append("circle").attr("fill", function(d) { return color(d.id); }).attr("r", 8).merge(nodeGroup);
-    console.log(nodes);
+    nodeGroup = nodeGroup.enter().append("g")
+      .attr('class', 'node')
+      //.attr("fill", function(d) { return color(d.id); })
+      .attr("r", 8)
+      .merge(nodeGroup);
 
     // Apply the general update pattern to the links.
     linkGroup = linkGroup.data(links);
     linkGroup.exit().remove();
     linkGroup = linkGroup.enter().append("line").merge(linkGroup);
-    console.log(links);
 
     // Update and restart the simulation.
     simulation.nodes(nodes);
     simulation.force("link").links(links);
     simulation.alpha(1).restart();
-    console.log('made it')
 /*
     var link = svg.append("g")
       .attr("class", "linkGroup1")
@@ -246,59 +251,62 @@ function myGraph(el) {
         }
         return classes.join(" ");
       })
-
+*/
+    //console.log(nodeGroup);
       //Draw the nodes
-      var node = nodes.selectAll("g.node")
-          .data(nodes, function(d) { return d.id;})
-          .on("click", function(d) {
-              if (d3.event.defaultPrevented) return; // ignore drag.
-              nodeGroup.selectAll("g.node").attr("stroke", "#EFD01B");
-              nodeGroup.selectAll("g.node").attr("background", "#FFF");
-              nodeGroup.selectAll("g.node").attr("fill", "#FFF");
-              nodeGroup.selectAll("g.node").attr("stroke-width", 0);
-              //nodeGroup.selectAll("g.node").attr("class", "");
-              if(selectedNode.id == d.id){
-                  //Unselect if selected node is already selected, duh!
-                  selectedNode = false;
-                  self._triggerEvent("node.unselected",d);
-              }
-              else {
-                  selectedNode = d;
-                  d3.select(this).attr("stroke", "#EFD01B");
-                  d3.select(this).attr("stroke-width", 4);
-                  d3.select(this).attr("background", "#FFF");
-                  d3.select(this).attr("fill", "#FFF");
-                  //d3.select(this).attr("class", "svgClass");
-                  self._triggerEvent("node.selected", d);
-              }
+      var node = d3.selectAll("g.node")
+      //var node = nodeGroup.nodes().forEach( function(d,i) {
+        .attr("class", function(d) { return "node " + d.type + " " + App.env; })
+        .data(nodes, function(d) { return d.id;})
+        .on("click", function(d) {
+          if (d3.event.defaultPrevented) return; // ignore drag.
+          nodeGroup.selectAll("g.node").attr("stroke", "#EFD01B");
+          nodeGroup.selectAll("g.node").attr("background", "#FFF");
+          nodeGroup.selectAll("g.node").attr("fill", "#FFF");
+          nodeGroup.selectAll("g.node").attr("stroke-width", 0);
+          if(selectedNode.id == d.id){
+            //Unselect if selected node is already selected, duh!
+            selectedNode = false;
+            self._triggerEvent("node.unselected",d);
+          }
+          else {
+            selectedNode = d;
+            d3.select(this).attr("stroke", "#EFD01B");
+            d3.select(this).attr("stroke-width", 4);
+            d3.select(this).attr("background", "#FFF");
+            d3.select(this).attr("fill", "#FFF");
+            //d3.select(this).attr("class", "svgClass");
+            self._triggerEvent("node.selected", d);
+          }
 
-              activate();//force.resume();//update();
-              d3.event.stopPropagation();
-          });
+          activate();//force.resume();//update();
+          d3.event.stopPropagation();
+        })
+//      });
 
-      var nodeEnter = node.enter().insert("g")
-          .attr("class", function(d){ return "node " + d.type + " " + App.env; })
+//      var nodeEnter = node.enter().insert("g")
+//          .attr("class", function(d){ return "node " + d.type + " " + App.env; })
           //.call(force.drag);
 
       // Drop-shadow borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
-      var circleShadow = nodeEnter.append("circle")
+      var circleShadow = d3.selectAll("g.node").append("circle")
           .attr("class", "nodeBlur")
           .attr("r", 30)
-          .style("fill", 'black')
+          .style("fill", 'black');
 
-      var circle = nodeEnter.append("circle")
+      var circle = d3.selectAll("g.node").append("circle")
           .attr("class", "bgCircle")
-          .attr("r", r)
+          .attr("r", r);
 
-      nodeEnter.append("circle")
+      d3.selectAll("g.node").append("circle")
           .attr("class", function(d){ return "server " + d.type; })
-          .attr("r", r)
+          .attr("r", r);
 
-      nodeEnter.append("image")
+      d3.selectAll("g.node").append("image")
           .attr("xlink:href", function(d){ return "img/" + d.type + ".svg"; })
           .attr("class", "icon")
           .attr("x", -22).attr("y", -22)
-          .attr("width", 44).attr("height", 44)
+          .attr("width", 44).attr("height", 44);
 
       // @todo. So much code repeatition! Gross! This can be made into a
       // func, but sloppy last-min fix was deployed here.
@@ -338,30 +346,40 @@ function myGraph(el) {
             nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 54).attr("height", 54).attr("x", -27).attr("y", -27);
           });
       }
+  }
 
-      //Activate Links and Nodes based on node selection - called be event handlerss
-      activate = function(){
-          //Highlight pertinent links
-          //Sorry about the verbosity of this... I guess I am too tired to get this right without typing it out.
-          var targetsOrSources = [];
-          link.classed("active", function(d) {
-              var active = false;
-              if(d.target.id == selectedNode.id){active = true; }
-              if(d.source.id == selectedNode.id){active = true; }
-              if(active){
-                  if(d.target.id != selectedNode.id){targetsOrSources.push(d.target); }
-                  if(d.source.id != selectedNode.id){targetsOrSources.push(d.source); }
-              }
-              return active;
-          });
-          node.classed("inactive", function(n) {
-              //No selection, bail.
-              if(!selectedNode){return false;}
-              if(targetsOrSources.indexOf(n) > -1){return false; }
-              if(n.id == selectedNode.id){return false; }
-              return true;
-          });
-      }*/
+  //Activate Links and Nodes based on node selection - called be event handlerss.
+  var activate = function() {
+    //Highlight pertinent links
+    //Sorry about the verbosity of this... I guess I am too tired to get this right without typing it out.
+    var targetsOrSources = [];
+    link.classed("active", function(d) {
+      var active = false;
+      if (d.target.id == selectedNode.id) {active = true; }
+      if (d.source.id == selectedNode.id) {active = true; }
+      if (active) {
+        if (d.target.id != selectedNode.id) {
+          targetsOrSources.push(d.target);
+        }
+        if (d.source.id != selectedNode.id) {
+          targetsOrSources.push(d.source);
+        }
+      }
+      return active;
+    });
+    node.classed("inactive", function(n) {
+      //No selection, bail.
+      if (!selectedNode) {
+        return false;
+      }
+      if (targetsOrSources.indexOf(n) > -1) {
+        return false;
+      }
+      if (n.id == selectedNode.id){
+        return false;
+      }
+      return true;
+    });
   }
 
   // Make it all go

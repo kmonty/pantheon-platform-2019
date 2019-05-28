@@ -1,3 +1,21 @@
-To run from localhost:
+To run from localhost, enter this at docroot:
 
 python -m SimpleHTTPServer
+
+Outstanding bugs:
+- Elite traffic spike’s 12 nodes of incoming traffic can be too wide for the space. Should have a background image w/ fade for the left-side text.
+— Need to figure out how to rearrange icons (so fileserver appears last instead of first).
+— Highlighted node stopped working (flashes border stroke for some reason. Need to fix.)
+
+Legacy bugs (from previous version):
+— Cannot refresh the page for anything but Basic w/o having things look wrong.
+— If you click off a highlighted element (such as index server), it remains highlighted (should be resolvable). Also should be able to press escape to close.
+
+Sources used to make certain features:
+- https://stackoverflow.com/questions/24685053/animate-arrows-with-css-only
+- https://stackoverflow.com/questions/11400241/updating-links-on-a-force-directed-graph-from-dynamic-json-data#12743139 (used to build original version)
+- https://hi.stamen.com/forcing-functions-inside-d3-v4-forces-and-layout-transitions-f3e89ee02d12
+- http://jsdatav.is/visuals.html?id=49b1d119e05b5efbf96e
+- https://bl.ocks.org/shimizu/e6209de87cdddde38dadbb746feaf3a3
+- https://gist.github.com/fergithub/1221457
+“d3 force layout with dynamically updating data”
