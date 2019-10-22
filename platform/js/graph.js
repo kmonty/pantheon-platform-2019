@@ -43,13 +43,13 @@ function myGraph(el) {
         }
         else if(node.type == "newrelic"){
             node.fixed = true;
-            node.x=100;
-            node.y=275;
+            node.x=300;
+            node.y=150;
         }
         else if(node.type == "codeserver"){
             node.fixed = true;
-            node.x=100;
-            node.y=150;
+            node.x=300;
+            node.y=275;
         }
         nodes.push(node);
         update();
@@ -96,12 +96,9 @@ function myGraph(el) {
         for (var i in nodes) {if (nodes[i]["id"] === id) return i};
     }
 
-    /*var bg = [
+    var bg = [
         {"id":"edgeserver", "pos":50},
         {"id":"appserver", "pos":200}
-    ];*/
-    var bg = [
-        {"id":"appserver", "pos":50}
     ];
 
     var color = d3.scale.category20();
@@ -109,7 +106,7 @@ function myGraph(el) {
     // set up the D3 visualisation in the specified element
     var w = $(el).innerWidth(),
         h = $(el).innerHeight(),
-        r = 36, // Circle radius.
+        r = 36, //Circle radius
         st = 50,
         bgcolor = 0,
         sw = 5,
@@ -138,7 +135,7 @@ function myGraph(el) {
         .gravity(1)
         .friction(.7)
         .linkStrength(function(d){
-            if (d.target.type == "newrelic" || d.target.type == "codeserver"){
+            if(d.target.type == "newrelic" || d.target.type == "codeserver"){
                 return 0;
             }
             return 1;
@@ -223,16 +220,16 @@ function myGraph(el) {
             });
 
         var nodeEnter = node.enter().insert("g")
-            .attr("class", function(d){ return "node " + d.type + " " + App.env; })
+            .attr("class", "node")
             //.call(force.drag);
 
-        // Drop-shadow borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
+        // Borrowed from https://jsfiddle.net/thatOneGuy/0nv4ck58/1/
         var circleShadow = nodeEnter.append("circle")
             .attr("class", "nodeBlur")
             .attr("r", 30)
             .style("fill", 'black')
 
-        var circle = nodeEnter.append("circle")
+        nodeEnter.append("circle")
             .attr("class", "bgCircle")
             .attr("r", r)
 
@@ -246,44 +243,9 @@ function myGraph(el) {
             .attr("x", -22).attr("y", -22)
             .attr("width", 44).attr("height", 44)
 
-        // @todo. So much code repeatition! Gross! This can be made into a
-        // func, but sloppy last-min fix was deployed here.
-        if (App.env == 'elite' || App.env == 'elitemax') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 56);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 53);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 56);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 82).attr("height", 82).attr("x", -41).attr("y", -41);
-            });
-        }
-        else if (App.env == 'performancexl') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 51);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 48);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 51);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 74).attr("height", 74).attr("x", -37).attr("y", -37);
-            });
-        }
-        else if (App.env == 'performancelarge') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 46);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 43);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 46);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 64).attr("height", 64).attr("x", -32).attr("y", -32);
-            });
-        }
-        else if (App.env == 'performancemedium') {
-            var bigservers = ['fileserver', 'dbserver', 'slavedbserver'];
-            bigservers.forEach(function(item, index, array) {
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .bgCircle").attr("r", 41);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .nodeBlur").attr("r", 38);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .server").attr("r", 41);
-              nodeGroup.selectAll("g.node." + App.env + "." + item + " .icon").attr("width", 54).attr("height", 54).attr("x", -27).attr("y", -27);
-            });
-        }
+        //circleShadow.attr("cx", function(d) { return d.x + 5; })
+        //  .attr("cy", function(d) { return d.y + 5; });
+
         node.exit().remove();
 
 
@@ -308,7 +270,7 @@ function myGraph(el) {
             //Highlight pertinent links
             //Sorry about the verbosity of this... I guess I am too tired to get this right without typing it out.
             var targetsOrSources = [];
-            link.classed("active", function(d) {
+            link.classed("active",function(d){
                 var active = false;
                 if(d.target.id == selectedNode.id){active = true; }
                 if(d.source.id == selectedNode.id){active = true; }
@@ -318,7 +280,7 @@ function myGraph(el) {
                 }
                 return active;
             });
-            node.classed("inactive", function(n) {
+            node.classed("inactive",function(n){
                 //No selection, bail.
                 if(!selectedNode){return false;}
                 if(targetsOrSources.indexOf(n) > -1){return false; }
@@ -327,7 +289,7 @@ function myGraph(el) {
             });
         }
 
-        // Updating on ticks.
+        //Updating on ticks
         force.on("tick", function(e) {
             // var desiredWidth = 1200;
             // var maxX = desiredWidth/2 + desiredWidth/4;
@@ -342,28 +304,21 @@ function myGraph(el) {
 
             nodes.forEach(function(d, i){
                 //if(d.type == "edgeserver"){d.y = 50; d.x = w/2;}
-                /*else*/
-                /** CONFIG: Set default y-axis placement for nodes. */
-                if (d.type == "appserver") {
-                  d.y = 100;
-                }
-                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver") {
-                  d.y = 250;
-                }
-                else if (d.type == "slavedbserver") { d.y = 400; }
+                /*else*/ if(d.type == "appserver"){d.y = 200;}
+                else if (d.type == "dbserver" || d.type == "fileserver" || d.type == "cacheserver" || d.type == "indexserver"){d.y = 350;}
+                else if (d.type == "slavedbserver") { d.y = 500; }
                 //else if(d.type == "codeserver"){d.x=w-200; d.y=275}
                 //else if(d.type == "newrelic"){d.x=w-100; d.y=50}
                 //else{d.y = 500;}
             });
 
-          // @todo this only works on load. On update?
-               var q = d3.geom.quadtree(nodes),
-                   i = 0,
-                   n = nodes.length;
+              // var q = d3.geom.quadtree(nodes),
+              //     i = 0,
+              //     n = nodes.length;
 
-               while (++i < n) {
-                 q.visit(collide(nodes[i]));
-               }
+              // while (++i < n) {
+              //   q.visit(collide(nodes[i]));
+              // }
 
             var k = 20 * e.alpha;
             // links.forEach(function(d, i) {
@@ -385,7 +340,7 @@ function myGraph(el) {
                 .attr("y2", function(d) { return d.target.y; });
         });
 
-        var collide = function(node) {
+        var collide = function(node){
           var r = node.radius + 30,
               nx1 = node.x - r,
               nx2 = node.x + r,
